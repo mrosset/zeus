@@ -19,11 +19,11 @@ with this program.  If not, see <http://www.gnu.org/licenses/>.
 package cmd
 
 import (
+	"fmt"
 	"log"
 	"os"
 	"path/filepath"
 
-	"fmt"
 	. "github.com/mrosset/raijin/pkg"
 	"github.com/spf13/cobra"
 )
@@ -69,7 +69,7 @@ func install(cmd *cobra.Command, args []string) {
 		gzDir   = filepath.Join(prefix, "gz")
 		tarBall = filepath.Join(gzDir, filepath.Base(bitcoinUri))
 	)
-	if Exists(filepath.Join(prefix, "bin", "bitcoind")) {
+	if Exists(bitcoindCmd(cmd)) {
 		log.Fatalf("Bitcoin already installed in %s", prefix)
 	}
 	fmt.Printf("Installing Bitcoin Core to %s\n", prefix)

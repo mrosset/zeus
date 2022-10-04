@@ -19,9 +19,11 @@ raijin:
 	go build -v
 	strip ./$@
 
-run: raijin
-	./raijin uninstall --prefix=$(PWD)/temp
-	./raijin install --prefix=$(PWD)/temp
+start: raijin
+	./$< --prefix $(PWD)/temp start
+
+install: raijin
+	./$< --prefix=$(PWD)/temp install
 
 test:
 	go test -v ./pkg
