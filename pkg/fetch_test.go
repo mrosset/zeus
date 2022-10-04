@@ -41,12 +41,12 @@ func TestFetchExtract(t *testing.T) {
 	if !Verify(gzfile) {
 		t.Error("File could not be verifed")
 	}
-	name, err := TarDir(gzfile)
+	index, err := TarDir(gzfile)
 	if err != nil {
 		t.Fatal(err)
 	}
-	if name != "bitcoin-23.0" {
-		t.Errorf("Expected tar index bitcoin-23.0 got %s", name)
+	if index != "bitcoin-23.0" {
+		t.Errorf("Expected tar index bitcoin-23.0 got %s", index)
 	}
 	if err = Extract(tmp, gzfile); err != nil {
 		t.Fatal(err)

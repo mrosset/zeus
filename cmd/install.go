@@ -62,6 +62,9 @@ func install(cmd *cobra.Command, args []string) {
 		gzDir   = filepath.Join(prefix, "gz")
 		tarBall = filepath.Join(gzDir, filepath.Base(bitcoinUri))
 	)
+	if Exists(filepath.Join(prefix, "bin", "bitcoind")) {
+		log.Fatalf("Bitcoin already installed in %s", prefix)
+	}
 	if !Exists(gzDir) {
 		os.MkdirAll(gzDir, 0775)
 	}
@@ -82,6 +85,11 @@ func install(cmd *cobra.Command, args []string) {
 	tarDir := filepath.Join(prefix, index)
 	if !Exists(tarDir) {
 		if err := Extract(prefix, tarBall); err != nil {
+			log.Fatal(err)
+		}
+	}
+	for _, e := range tarEntries {
+		if err := os.Rename(filepath.Join(tarDir, e), filepath.Join(prefix, e)); err != nil {
 			log.Fatal(err)
 		}
 	}

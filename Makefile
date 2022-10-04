@@ -17,6 +17,7 @@
 
 raijin:
 	go build -v
+	./$@ uninstall
 	./$@ install
 
 test:
