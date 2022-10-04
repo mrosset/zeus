@@ -15,4 +15,5 @@ require (
 	github.com/mrosset/util v0.0.0-20171017103019-cbd40a79bc60 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
 	github.com/stretchr/testify v1.8.0 // indirect
+	github.com/subpop/go-ini v0.1.4 // indirect
 )
