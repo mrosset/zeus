@@ -23,6 +23,7 @@ import (
 	"os"
 	"path/filepath"
 
+	"fmt"
 	. "github.com/mrosset/raijin/pkg"
 	"github.com/spf13/cobra"
 )
@@ -71,6 +72,7 @@ func install(cmd *cobra.Command, args []string) {
 	if Exists(filepath.Join(prefix, "bin", "bitcoind")) {
 		log.Fatalf("Bitcoin already installed in %s", prefix)
 	}
+	fmt.Printf("Installing Bitcoin Core to %s\n", prefix)
 	if !Exists(gzDir) {
 		os.MkdirAll(gzDir, 0775)
 	}

@@ -20,8 +20,8 @@ raijin:
 	strip ./$@
 
 run: raijin
-	./raijin uninstall
-	./raijin install
+	./raijin uninstall --prefix=$(PWD)/temp
+	./raijin install --prefix=$(PWD)/temp
 
 test:
 	go test -v ./pkg
