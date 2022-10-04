@@ -17,12 +17,16 @@
 
 raijin:
 	go build -v
-	./$@ uninstall
-	./$@ install
+	strip ./$@
+
+run: raijin
+	./raijin uninstall
+	./raijin install
 
 test:
 	go test -v ./pkg
 
 clean:
 	-rm raijin
+
 .PHONY: raijin

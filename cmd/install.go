@@ -40,7 +40,12 @@ to quickly create a Cobra application.`,
 	Run: install,
 }
 
-const bitcoinUri = "http://10.119.176.16/bitcoin-23.0-x86_64-linux-gnu.tar.gz"
+const (
+	prodUri = "https://bitcoincore.org/bin/bitcoin-core-23.0/bitcoin-23.0-x86_64-linux-gnu.tar.gz"
+	devUri  = "http://10.119.176.16/bitcoin-23.0-x86_64-linux-gnu.tar.gz"
+)
+
+var bitcoinUri = devUri
 
 func init() {
 	rootCmd.AddCommand(installCmd)
@@ -59,6 +64,7 @@ var tarEntries = []string{"include", "lib", "bin", "share", "README.md"}
 
 func install(cmd *cobra.Command, args []string) {
 	var (
+		prefix  = prefixFlag(cmd)
 		gzDir   = filepath.Join(prefix, "gz")
 		tarBall = filepath.Join(gzDir, filepath.Base(bitcoinUri))
 	)
@@ -69,14 +75,15 @@ func install(cmd *cobra.Command, args []string) {
 		os.MkdirAll(gzDir, 0775)
 	}
 	if !Exists(tarBall) {
-		out, err := Fetch(gzDir, bitcoinUri)
+		_, err := Fetch(gzDir, bitcoinUri)
 		if err != nil {
 			log.Fatal(err)
 		}
-		if !Verify(out) {
-			os.Remove(out)
-			log.Fatalf("Could not verify sha256 sum for %s", out)
-		}
+
+	}
+	if !Verify(tarBall) {
+		os.Remove(tarBall)
+		log.Fatalf("Could not verify sha256 sum for %s", tarBall)
 	}
 	index, err := TarDir(tarBall)
 	if err != nil {
@@ -88,10 +95,10 @@ func install(cmd *cobra.Command, args []string) {
 			log.Fatal(err)
 		}
 	}
+	defer os.RemoveAll(tarDir)
 	for _, e := range tarEntries {
 		if err := os.Rename(filepath.Join(tarDir, e), filepath.Join(prefix, e)); err != nil {
 			log.Fatal(err)
 		}
 	}
-	defer os.RemoveAll(tarDir)
 }

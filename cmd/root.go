@@ -50,8 +50,6 @@ func Execute() {
 	}
 }
 
-var prefix string
-
 func init() {
 	home, err := os.UserHomeDir()
 	if err != nil {
@@ -63,8 +61,16 @@ func init() {
 	// will be global for your application.
 
 	// rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.raijin.yaml)")
-	rootCmd.PersistentFlags().StringVarP(&prefix, "prefix", "p", filepath.Join(home, "bitcoin"), "Directory Bitcoin Core is to be installed")
+	rootCmd.PersistentFlags().String("prefix", filepath.Join(home, "bitcoin"), "Directory Bitcoin Core is to be installed")
 	// Cobra also supports local flags, which will only run
 	// when this action is called directly.
 	rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+}
+
+func prefixFlag(cmd *cobra.Command) string {
+	prefix, err := cmd.Flags().GetString("prefix")
+	if err != nil {
+		log.Fatal(err)
+	}
+	return prefix
 }

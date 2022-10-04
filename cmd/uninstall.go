@@ -54,6 +54,9 @@ func init() {
 }
 
 func uninstall(cmd *cobra.Command, args []string) {
+	var (
+		prefix = prefixFlag(cmd)
+	)
 	for _, e := range tarEntries {
 		if err := os.RemoveAll(filepath.Join(prefix, e)); err != nil {
 			log.Fatal(err)
