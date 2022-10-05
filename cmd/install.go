@@ -65,9 +65,11 @@ var tarEntries = []string{"include", "lib", "bin", "share", "README.md"}
 
 func install(cmd *cobra.Command, args []string) {
 	var (
-		prefix  = prefixFlag(cmd)
-		gzDir   = filepath.Join(prefix, "gz")
-		tarBall = filepath.Join(gzDir, filepath.Base(bitcoinUri))
+		prefix   = prefixFlag(cmd)
+		gzDir    = filepath.Join(prefix, "gz")
+		tarBall  = filepath.Join(gzDir, filepath.Base(bitcoinUri))
+		confFile = configFile(cmd)
+		data     = dataDir(cmd)
 	)
 	if Exists(bitcoindCmd(cmd)) {
 		log.Fatalf("Bitcoin already installed in %s", prefix)
@@ -102,5 +104,14 @@ func install(cmd *cobra.Command, args []string) {
 		if err := os.Rename(filepath.Join(tarDir, e), filepath.Join(prefix, e)); err != nil {
 			log.Fatal(err)
 		}
+	}
+	if !Exists(confFile) {
+		fmt.Println("Writing default config file.")
+		if err := NewDefaultConfig(prefix).Write(confFile); err != nil {
+			log.Fatal(err)
+		}
+	}
+	if !Exists(data) {
+		os.Mkdir(data, 0755)
 	}
 }

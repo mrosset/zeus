@@ -31,13 +31,13 @@ type Config struct {
 }
 
 // Writes *Config to INI PATH
-func (config *Config) Write(path string) error {
+func (c *Config) Write(path string) error {
 	fi, err := os.Create(path)
 	if err != nil {
 		return err
 	}
 	defer fi.Close()
-	b, err := ini.Marshal(config)
+	b, err := ini.Marshal(c)
 	if err != nil {
 		return err
 	}
@@ -46,7 +46,7 @@ func (config *Config) Write(path string) error {
 }
 
 // Returns a new *Config with PREFIX substitution
-func NewBitcoinConfig(prefix string) *Config {
+func NewDefaultConfig(prefix string) *Config {
 	return &Config{
 		DataDir: filepath.Join(prefix, "data"),
 	}

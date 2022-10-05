@@ -84,8 +84,14 @@ func bitcoindCmd(cmd *cobra.Command) string {
 	return filepath.Join(prefixFlag(cmd), "bin", "bitcoind")
 }
 
+// Returns full path of bitcoin.conf using prefix flag
 func configFile(cmd *cobra.Command) string {
 	return filepath.Join(prefixFlag(cmd), "bitcoin.conf")
+}
+
+// Returns the full path of data directory using prefix flag
+func dataDir(cmd *cobra.Command) string {
+	return filepath.Join(prefixFlag(cmd), "data")
 }
 
 // Returns the prefix local flag. If an error occurs logs fatal error.

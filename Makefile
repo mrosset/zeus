@@ -15,18 +15,20 @@
 # You should have received a copy of the GNU General Public License along
 # with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+PREFIX = ./$< --prefix=$(PWD)/temp
+
 raijin:
 	go build -v
 	strip ./$@
 
 start: raijin
-	./$< --prefix $(PWD)/temp start
+	$(PREFIX) $@
 
 uninstall: raijin
-	./$< --prefix=$(PWD)/temp uninstall
+	$(PREFIX) uninstall
 
 install: raijin uninstall
-	./$< --prefix=$(PWD)/temp install
+	$(PREFIX) install
 
 test:
 	go test -v ./pkg

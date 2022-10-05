@@ -24,7 +24,7 @@ import (
 	"testing"
 )
 
-var config = NewBitcoinConfig("./testdata")
+var config = NewDefaultConfig("./testdata")
 
 func TestConfig(t *testing.T) {
 	var (

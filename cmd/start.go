@@ -20,8 +20,6 @@ package cmd
 
 import (
 	"fmt"
-	"log"
-
 	. "github.com/mrosset/raijin/pkg"
 	"github.com/spf13/cobra"
 )
@@ -55,12 +53,11 @@ func init() {
 
 func start(cmd *cobra.Command, args []string) {
 	var (
-		bin    = bitcoindCmd(cmd)
-		config = configFile(cmd)
+		prefix   = prefixFlag(cmd)
+		bitcoind = NewBitcoind(prefix)
 	)
 	checkPrefix(cmd)
-	if !Exists(config) {
-		log.Fatalf("%s does not exists run `raijin config generate` to create it", config)
-	}
-	fmt.Println("start called", bin)
+	fmt.Println("Starting bitcoind")
+	fmt.Printf("%+v\n", bitcoind)
+	bitcoind.Run()
 }
