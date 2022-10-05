@@ -41,7 +41,7 @@ func TestDefault(t *testing.T) {
 		file = "testdata/default.conf"
 	)
 	if !Exists(file) {
-		if err := WriteConfig(file, config); err != nil {
+		if err := config.Write(file); err != nil {
 			t.Fatal(err)
 		}
 	}
@@ -53,7 +53,7 @@ func TestWrite(t *testing.T) {
 		file = "testdata/write.conf"
 	)
 	defer os.Remove(file)
-	if err := WriteConfig(file, config); err != nil {
+	if err := config.Write(file); err != nil {
 		t.Fatal(err)
 	}
 

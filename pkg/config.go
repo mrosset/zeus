@@ -30,15 +30,8 @@ type Config struct {
 	DataDir string `ini:"datadir"`
 }
 
-// Returns a new *Config with PREFIX substitution
-func NewBitcoinConfig(prefix string) *Config {
-	return &Config{
-		DataDir: filepath.Join(prefix, "data"),
-	}
-}
-
-// Writes *Config to ini PATH
-func WriteConfig(path string, config *Config) error {
+// Writes *Config to INI PATH
+func (config *Config) Write(path string) error {
 	fi, err := os.Create(path)
 	if err != nil {
 		return err
@@ -52,7 +45,14 @@ func WriteConfig(path string, config *Config) error {
 	return err
 }
 
-// Reads *Config from ini PATH
+// Returns a new *Config with PREFIX substitution
+func NewBitcoinConfig(prefix string) *Config {
+	return &Config{
+		DataDir: filepath.Join(prefix, "data"),
+	}
+}
+
+// Reads *Config from INI PATH
 func ReadConfig(path string) (*Config, error) {
 	var (
 		config = new(Config)

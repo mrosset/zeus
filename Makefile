@@ -22,7 +22,10 @@ raijin:
 start: raijin
 	./$< --prefix $(PWD)/temp start
 
-install: raijin
+uninstall: raijin
+	./$< --prefix=$(PWD)/temp uninstall
+
+install: raijin uninstall
 	./$< --prefix=$(PWD)/temp install
 
 test:
