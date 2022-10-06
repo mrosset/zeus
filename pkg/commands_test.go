@@ -20,7 +20,6 @@ package raijin
 
 import (
 	"fmt"
-	"reflect"
 	"testing"
 )
 
@@ -28,13 +27,11 @@ func TestBitcoind(t *testing.T) {
 	var (
 		prefix   = "temp"
 		bitcoind = NewBitcoind(prefix)
-		got      = bitcoind.Args
-		expect   = []string{
-			"temp/bin/bitcoind",
-			"-conf=temp/bitcoin.conf"}
+		got      = bitcoind.Path
+		expect   = "temp/bin/bitcoind"
 	)
 	fmt.Printf("%+v\n", bitcoind.Args)
-	if !reflect.DeepEqual(expect, got) {
+	if expect != got {
 		t.Errorf("Expect %s got %s", expect, got)
 	}
 }

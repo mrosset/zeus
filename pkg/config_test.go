@@ -27,13 +27,7 @@ import (
 var config = NewDefaultConfig("./testdata")
 
 func TestConfig(t *testing.T) {
-	var (
-		expect = "testdata/data"
-		got    = config.DataDir
-	)
-	if got != expect {
-		t.Errorf("expect %s got %s", expect, got)
-	}
+	checkConfig(config, t)
 }
 
 func TestDefault(t *testing.T) {
@@ -59,16 +53,37 @@ func TestWrite(t *testing.T) {
 
 }
 
+func checkConfig(config *Config, t *testing.T) {
+	var (
+		expect = "testdata/data"
+	)
+	if config.Server != 1 {
+		t.Fatal("config.Server should be 1")
+	}
+	if config.NoListen != 1 {
+		t.Fatal("config.NoListen should be 1")
+	}
+	if config.DBCache != 1000 {
+		t.Fatal("config.DBCache should be 1000")
+	}
+	if config.TXIndex != 1 {
+		t.Fatal("config.TXIndex should be ")
+	}
+	if expect != config.DataDir {
+		t.Fatalf("Expected %s got %s", expect, config.DataDir)
+	}
+	if config.Regtest != 1 {
+		t.Fatal("config.Regtest should be 1")
+	}
+}
+
 func TestRead(t *testing.T) {
 	var (
-		file   = "testdata/default.conf"
-		expect = "testdata/data"
+		file = "testdata/default.conf"
 	)
 	config, err := ReadConfig(file)
 	if err != nil {
 		t.Fatal(err)
 	}
-	if expect != config.DataDir {
-		t.Fatalf("Expected %s got %s", expect, config.DataDir)
-	}
+	checkConfig(config, t)
 }

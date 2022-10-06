@@ -20,6 +20,8 @@ package cmd
 
 import (
 	"fmt"
+	"log"
+
 	. "github.com/mrosset/raijin/pkg"
 	"github.com/spf13/cobra"
 )
@@ -58,6 +60,7 @@ func start(cmd *cobra.Command, args []string) {
 	)
 	checkPrefix(cmd)
 	fmt.Println("Starting bitcoind")
-	fmt.Printf("%+v\n", bitcoind)
-	bitcoind.Run()
+	if err := bitcoind.Run(); err != nil {
+		log.Fatal(err)
+	}
 }

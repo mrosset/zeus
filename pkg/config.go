@@ -26,8 +26,34 @@ import (
 	"github.com/subpop/go-ini"
 )
 
+type Chain struct {
+	Regtest int `ini:"regtest"`
+}
+
+type Regtest struct {
+}
+
 type Config struct {
-	DataDir string `ini:"datadir"`
+	Server   int    `ini:"server"`
+	NoListen int    `ini:"nolisten"`
+	DBCache  int    `ini:"dbcache"`
+	TXIndex  int    `ini:"txindex"`
+	DataDir  string `ini:"datadir"`
+	Regtest  int    `ini:"regtest"`
+
+	// Regtest int `ini:"regtest"`
+}
+
+// Returns a new default *Config with PREFIX substitution
+func NewDefaultConfig(prefix string) *Config {
+	return &Config{
+		Server:   1,
+		NoListen: 1,
+		DBCache:  1000,
+		TXIndex:  1,
+		DataDir:  filepath.Join(prefix, "data"),
+		Regtest:  1,
+	}
 }
 
 // Writes *Config to INI PATH
@@ -43,13 +69,6 @@ func (c *Config) Write(path string) error {
 	}
 	_, err = fi.Write(b)
 	return err
-}
-
-// Returns a new *Config with PREFIX substitution
-func NewDefaultConfig(prefix string) *Config {
-	return &Config{
-		DataDir: filepath.Join(prefix, "data"),
-	}
 }
 
 // Reads *Config from INI PATH

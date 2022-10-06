@@ -15,25 +15,32 @@
 # You should have received a copy of the GNU General Public License along
 # with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-PREFIX = ./$< --prefix=$(PWD)/temp
+CMD = ./raijin --prefix=$(PWD)/temp
+
+.NOTPARALLEL:
+.PHONY: raijin
 
 raijin:
 	go build -v
 	strip ./$@
 
 start: raijin
-	$(PREFIX) $@
+	$(CMD) $@
 
-uninstall: raijin
-	$(PREFIX) uninstall
+test-uinstall: raijin
+	$(CMD) uninstall
 
-install: raijin uninstall
-	$(PREFIX) install
+test-install: check raijin test-uinstall
+	$(CMD) install
 
-test:
+check:
+	-rm pkg/testdata/default.conf
 	go test -v ./pkg
 
-clean:
-	-rm raijin
+install:
+	go install
 
-.PHONY: raijin
+clean:
+	-$(CMD) uninstall
+	-rm raijin
+	-rm temp/bitcoin.conf

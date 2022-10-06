@@ -105,11 +105,11 @@ func install(cmd *cobra.Command, args []string) {
 			log.Fatal(err)
 		}
 	}
-	if !Exists(confFile) {
-		fmt.Println("Writing default config file.")
-		if err := NewDefaultConfig(prefix).Write(confFile); err != nil {
-			log.Fatal(err)
-		}
+	// TODO: Prompt before overwriting bitcoind.config
+	fmt.Println("Writing default config file.")
+
+	if err := NewDefaultConfig(prefix).Write(confFile); err != nil {
+		log.Fatal(err)
 	}
 	if !Exists(data) {
 		os.Mkdir(data, 0755)
