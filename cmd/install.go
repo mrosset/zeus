@@ -78,12 +78,12 @@ func install(cmd *cobra.Command, args []string) {
 	if Exists(bitcoindCmd(cmd)) {
 		log.Fatalf("Bitcoin already installed in %s", prefix)
 	}
-	fmt.Printf("Installing Bitcoin Core to: %s\n", prefix)
+	fmt.Printf("Installing:\t Bitcoin Core to %s\n", prefix)
 	if !Exists(gzDir) {
 		os.MkdirAll(gzDir, 0775)
 	}
 	if !Exists(tarBall) {
-		fmt.Println("Downloading:", uri)
+		fmt.Println("Downloading:\t", uri)
 		_, err := Fetch(gzDir, uri)
 		if err != nil {
 			log.Fatal(err)
@@ -94,7 +94,7 @@ func install(cmd *cobra.Command, args []string) {
 		os.Remove(tarBall)
 		log.Fatalf("Could not verify sha256 sum for %s", tarBall)
 	} else {
-		fmt.Println("Verified:", filepath.Base(tarBall), "OK")
+		fmt.Println("Verified:\t", filepath.Base(tarBall), "OK")
 	}
 	index, err := TarDir(tarBall)
 	if err != nil {
@@ -102,7 +102,7 @@ func install(cmd *cobra.Command, args []string) {
 	}
 	tarDir := filepath.Join(prefix, index)
 	if !Exists(tarDir) {
-		fmt.Println("Extracting:", tarBall, " -> ", prefix)
+		fmt.Println("Extracting:\t", tarBall, " -> ", prefix)
 		if err := Extract(prefix, tarBall); err != nil {
 			log.Fatal(err)
 		}
@@ -114,7 +114,7 @@ func install(cmd *cobra.Command, args []string) {
 		}
 	}
 	// TODO: Prompt before overwriting bitcoind.config
-	fmt.Println("Wrote default config file:", confFile)
+	fmt.Println("Wrote:\t\t default config file:", confFile)
 
 	if err := NewDefaultConfig(prefix).Write(confFile); err != nil {
 		log.Fatal(err)
