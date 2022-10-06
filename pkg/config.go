@@ -26,13 +26,6 @@ import (
 	"github.com/subpop/go-ini"
 )
 
-type Chain struct {
-	Regtest int `ini:"regtest"`
-}
-
-type Regtest struct {
-}
-
 type Config struct {
 	Server   int    `ini:"server"`
 	NoListen int    `ini:"nolisten"`
