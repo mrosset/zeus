@@ -21,15 +21,41 @@ package raijin
 import (
 	"context"
 	"fmt"
-	"github.com/codeclysm/extract"
-	"github.com/mrosset/gurl"
 	"os"
 	"path"
+
+	"github.com/codeclysm/extract"
+	"github.com/mrosset/gurl"
 )
 
 const (
-	amd64_linux_gnu = "2CCA490C1F2842884A3C5B0606F179F9F937177DA4EADD628E3F7FD7E25D26D0"
+	BITCOIN_VERSION = "23.0"
 )
+
+type Tarball struct {
+	Hash string
+	File string
+}
+
+var bitcoinHashes = map[string]map[string]Tarball{
+	"amd64": {"linux": Tarball{"2CCA490C1F2842884A3C5B0606F179F9F937177DA4EADD628E3F7FD7E25D26D0",
+		fmt.Sprintf("bitcoin-%s-x86_64-linux-gnu.tar.gz", BITCOIN_VERSION)}},
+}
+
+var mirrors = map[string]string{
+	"release": fmt.Sprintf("https://bitcoincore.org/bin/bitcoin-core-%s", BITCOIN_VERSION),
+	"debug":   "http://10.119.176.16",
+}
+
+// Returns the upstream URI for MIRROR,  ARCH and OS
+func BitcoinUri(arch, os, mirror string) string {
+	return fmt.Sprintf("%s/%s", mirrors[mirror], bitcoinHashes[arch][os].File)
+}
+
+// Returns the sha256 hash for ARCH and OS
+func BitcoinHash(arch, os string) string {
+	return bitcoinHashes[arch][os].Hash
+}
 
 // Download URI to DIR path. Returns downloaded file path
 func Fetch(dir, uri string) (string, error) {
@@ -43,19 +69,18 @@ func Fetch(dir, uri string) (string, error) {
 	return file, nil
 }
 
-// Verify the sha256 sum for PATH. Returns true if verification
+// Verify the HASH for PATH. Returns true if verification
 // passes. False if it does not pass
 //
 // TODO: add support for other OS and ARCHs
-func Verify(path string) bool {
-	hash, err := Sha256sum(path)
+func Verify(path, hash string) bool {
+	got, err := Sha256sum(path)
 	if err != nil {
 		return false
 	}
-	if hash == amd64_linux_gnu {
+	if got == hash {
 		return true
 	}
-	fmt.Println(hash, amd64_linux_gnu)
 	return false
 }
 

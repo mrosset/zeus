@@ -25,7 +25,25 @@ import (
 	"testing"
 )
 
-const uri = "http://10.119.176.16/bitcoin-23.0-x86_64-linux-gnu.tar.gz"
+func TestBitcoinUri(t *testing.T) {
+	var (
+		expect = "http://10.119.176.16/bitcoin-23.0-x86_64-linux-gnu.tar.gz"
+		got    = BitcoinUri("amd64", "linux", "debug")
+	)
+	if expect != got {
+		t.Errorf("Expected URI %s got %s", expect, got)
+	}
+}
+
+func TestBitcoinHash(t *testing.T) {
+	var (
+		expect = "2CCA490C1F2842884A3C5B0606F179F9F937177DA4EADD628E3F7FD7E25D26D0"
+		got    = BitcoinHash("amd64", "linux")
+	)
+	if expect != got {
+		t.Errorf("Expected Hash %s got %s", expect, got)
+	}
+}
 
 func TestFetchExtract(t *testing.T) {
 	tmp, err := ioutil.TempDir(os.TempDir(), "raijin")
@@ -33,12 +51,12 @@ func TestFetchExtract(t *testing.T) {
 		t.Fatal(err)
 	}
 	defer os.RemoveAll(tmp)
-	gzfile, err := Fetch(tmp, uri)
+	gzfile, err := Fetch(tmp, BitcoinUri("amd64", "linux", "debug"))
 	if err != nil {
 		t.Fatal(err)
 	}
 	defer os.RemoveAll(gzfile)
-	if !Verify(gzfile) {
+	if !Verify(gzfile, BitcoinHash("amd64", "linux")) {
 		t.Error("File could not be verifed")
 	}
 	index, err := TarDir(gzfile)

@@ -23,6 +23,7 @@ import (
 	"log"
 	"os"
 	"path/filepath"
+	"runtime"
 
 	. "github.com/mrosset/raijin/pkg"
 	"github.com/spf13/cobra"
@@ -41,13 +42,6 @@ to quickly create a Cobra application.`,
 	Run: install,
 }
 
-const (
-	prodUri = "https://bitcoincore.org/bin/bitcoin-core-23.0/bitcoin-23.0-x86_64-linux-gnu.tar.gz"
-	devUri  = "http://10.119.176.16/bitcoin-23.0-x86_64-linux-gnu.tar.gz"
-)
-
-var bitcoinUri = devUri
-
 func init() {
 	rootCmd.AddCommand(installCmd)
 
@@ -59,35 +53,48 @@ func init() {
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:
 	// installCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	installCmd.Flags().StringP("release", "r", "debug", "Specify to use debug or release URI")
 }
 
 var tarEntries = []string{"include", "lib", "bin", "share", "README.md"}
 
+func releaseFlag(cmd *cobra.Command) string {
+	release, err := cmd.Flags().GetString("release")
+	if err != nil {
+		log.Fatal(err)
+	}
+	return release
+}
+
 func install(cmd *cobra.Command, args []string) {
 	var (
+		uri      = BitcoinUri(runtime.GOARCH, runtime.GOOS, releaseFlag(cmd))
 		prefix   = prefixFlag(cmd)
 		gzDir    = filepath.Join(prefix, "gz")
-		tarBall  = filepath.Join(gzDir, filepath.Base(bitcoinUri))
+		tarBall  = filepath.Join(gzDir, filepath.Base(uri))
 		confFile = configFile(cmd)
 		data     = dataDir(cmd)
 	)
 	if Exists(bitcoindCmd(cmd)) {
 		log.Fatalf("Bitcoin already installed in %s", prefix)
 	}
-	fmt.Printf("Installing Bitcoin Core to %s\n", prefix)
+	fmt.Printf("Installing Bitcoin Core to: %s\n", prefix)
 	if !Exists(gzDir) {
 		os.MkdirAll(gzDir, 0775)
 	}
 	if !Exists(tarBall) {
-		_, err := Fetch(gzDir, bitcoinUri)
+		fmt.Println("Downloading:", uri)
+		_, err := Fetch(gzDir, uri)
 		if err != nil {
 			log.Fatal(err)
 		}
 
 	}
-	if !Verify(tarBall) {
+	if !Verify(tarBall, BitcoinHash(runtime.GOARCH, runtime.GOOS)) {
 		os.Remove(tarBall)
 		log.Fatalf("Could not verify sha256 sum for %s", tarBall)
+	} else {
+		fmt.Println("Verified:", filepath.Base(tarBall), "OK")
 	}
 	index, err := TarDir(tarBall)
 	if err != nil {
@@ -95,6 +102,7 @@ func install(cmd *cobra.Command, args []string) {
 	}
 	tarDir := filepath.Join(prefix, index)
 	if !Exists(tarDir) {
+		fmt.Println("Extracting:", tarBall, " -> ", prefix)
 		if err := Extract(prefix, tarBall); err != nil {
 			log.Fatal(err)
 		}
@@ -106,7 +114,7 @@ func install(cmd *cobra.Command, args []string) {
 		}
 	}
 	// TODO: Prompt before overwriting bitcoind.config
-	fmt.Println("Writing default config file.")
+	fmt.Println("Wrote default config file:", confFile)
 
 	if err := NewDefaultConfig(prefix).Write(confFile); err != nil {
 		log.Fatal(err)
