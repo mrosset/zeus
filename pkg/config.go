@@ -40,8 +40,6 @@ type Config struct {
 	TXIndex  int    `ini:"txindex"`
 	DataDir  string `ini:"datadir"`
 	Regtest  int    `ini:"regtest"`
-
-	// Regtest int `ini:"regtest"`
 }
 
 // Returns a new default *Config with PREFIX substitution
