@@ -52,23 +52,27 @@ func init() {
 
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:
-	// installCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
-	installCmd.Flags().StringP("release", "r", "debug", "Specify to use debug or release URI")
+	installCmd.Flags().BoolP("debug", "d", true, "If false use debug URI for downloads")
 }
 
 var tarEntries = []string{"include", "lib", "bin", "share", "README.md"}
 
-func releaseFlag(cmd *cobra.Command) string {
-	release, err := cmd.Flags().GetString("release")
+func mirrorFlag(cmd *cobra.Command) string {
+	r, err := cmd.Flags().GetBool("debug")
 	if err != nil {
 		log.Fatal(err)
 	}
-	return release
+	if r {
+		return "debug"
+	} else {
+		return "release"
+	}
+
 }
 
 func install(cmd *cobra.Command, args []string) {
 	var (
-		uri      = BitcoinUri(runtime.GOARCH, runtime.GOOS, releaseFlag(cmd))
+		uri      = BitcoinUri(runtime.GOARCH, runtime.GOOS, mirrorFlag(cmd))
 		prefix   = prefixFlag(cmd)
 		gzDir    = filepath.Join(prefix, "gz")
 		tarBall  = filepath.Join(gzDir, filepath.Base(uri))
