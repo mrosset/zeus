@@ -29,6 +29,10 @@ import (
 
 const (
 	BITCOIN_VERSION = "23.0"
+	BITCOIN_URI     = "https://bitcoincore.org/bin/bitcoin-core-%s"
+	LND_VERSION     = "0.15.1-beta"
+	LND_URI         = "https://github.com/lightningnetwork/lnd/releases/download/%s"
+	LAN_URI         = "http://10.119.176.16"
 )
 
 type MirrorType int
@@ -39,29 +43,30 @@ const (
 )
 
 type Tarball struct {
-	Hash string
-	File string
+	Hash   string
+	File   string
+	TarDir string
 }
 
-var bitcoinHashes = map[string]map[string]Tarball{
+type UpstreamFiles map[string]map[string]Tarball
+
+// https://bitcoincore.org/bin/bitcoin-core-23.0/bitcoin-23.0-x86_64-linux-gnu.tar.gz
+var bitcoinUpstream = UpstreamFiles{
 	"amd64": {"linux": Tarball{
-		"2CCA490C1F2842884A3C5B0606F179F9F937177DA4EADD628E3F7FD7E25D26D0",
-		fmt.Sprintf("bitcoin-%s-x86_64-linux-gnu.tar.gz", BITCOIN_VERSION)}},
-}
+		Hash:   "2CCA490C1F2842884A3C5B0606F179F9F937177DA4EADD628E3F7FD7E25D26D0",
+		TarDir: fmt.Sprintf("bitcoin-%s", BITCOIN_VERSION),
+		File:   fmt.Sprintf("bitcoin-%s-x86_64-linux-gnu.tar.gz", BITCOIN_VERSION)}}}
 
-var mirrors = map[MirrorType]string{
-	WEB: fmt.Sprintf("https://bitcoincore.org/bin/bitcoin-core-%s", BITCOIN_VERSION),
-	LAN: "http://10.119.176.16",
-}
-
-// Returns the upstream URI for MIRROR,  ARCH and OS
-func BitcoinUri(arch, os string, mirror MirrorType) string {
-	return fmt.Sprintf("%s/%s", mirrors[mirror], bitcoinHashes[arch][os].File)
-}
+// https://github.com/lightningnetwork/lnd/releases/download/v0.15.1-beta/lnd-linux-amd64-v0.15.1-beta.tar.gz
+var lndUpstream = UpstreamFiles{
+	"amd64": {"linux": Tarball{
+		Hash:   "0673768E657AC004367D07C20395D544A3D1DF926BE1A1990A17E23A8A91D4FB",
+		TarDir: fmt.Sprintf("lnd-linux-amd64-v%s", LND_VERSION),
+		File:   fmt.Sprintf("lnd-linux-amd64-v%s.tar.gz", LND_VERSION)}}}
 
 // Returns the sha256 hash for ARCH and OS
 func BitcoinHash(arch, os string) string {
-	return bitcoinHashes[arch][os].Hash
+	return bitcoinUpstream[arch][os].Hash
 }
 
 // Download URI to DIR path. Returns downloaded file path

@@ -38,23 +38,52 @@ type Installer struct {
 	os       string
 	prefix   string
 	uri      string
+	tarDir   string
 }
 
 func NewBitcoinInstaller(arch, os, prefix string, release MirrorType) *Installer {
+	var (
+		uri = LAN_URI
+	)
+	if release == WEB {
+		uri = fmt.Sprintf(BITCOIN_URI, BITCOIN_VERSION)
+
+	}
 	return &Installer{
 		arch:   arch,
 		os:     os,
 		prefix: prefix,
 		commands: []string{
-			"test_bitcoin",
-			"bitcoind",
-			"bitcoin-wallet",
-			"bitcoin-qt",
-			"bitcoin-tx",
-			"bitcoin-util",
-			"bitcoin-cli"},
-		hash: BitcoinHash(arch, os),
-		uri:  BitcoinUri(arch, os, release)}
+			"bin/test_bitcoin",
+			"bin/bitcoind",
+			"bin/bitcoin-wallet",
+			"bin/bitcoin-qt",
+			"bin/bitcoin-tx",
+			"bin/bitcoin-util",
+			"bin/bitcoin-cli"},
+		tarDir: bitcoinUpstream[arch][os].TarDir,
+		hash:   bitcoinUpstream[arch][os].Hash,
+		uri:    fmt.Sprintf("%s/%s", uri, bitcoinUpstream[arch][os].File)}
+}
+
+func NewLNDInstaller(arch, os, prefix string, release MirrorType) *Installer {
+	var (
+		uri = LAN_URI
+	)
+	if release == WEB {
+		uri = fmt.Sprintf(LND_URI, BITCOIN_VERSION)
+
+	}
+	return &Installer{
+		arch:   arch,
+		os:     os,
+		prefix: prefix,
+		commands: []string{
+			"lnd",
+			"lncli"},
+		tarDir: lndUpstream[arch][os].TarDir,
+		hash:   lndUpstream[arch][os].Hash,
+		uri:    fmt.Sprintf("%s/%s", uri, lndUpstream[arch][os].File)}
 }
 
 func (i *Installer) GzDir() string {
@@ -73,10 +102,7 @@ func (i *Installer) Fetch() error {
 		os.MkdirAll(i.GzDir(), 0700)
 	}
 	if !Exists(file) {
-		err := Fetch(i.GzDir(), i.uri)
-		if err != nil {
-			return err
-		}
+		return Fetch(i.GzDir(), i.uri)
 	}
 	return nil
 }
@@ -85,7 +111,7 @@ func (i *Installer) Verify() error {
 	var (
 		tarBall = i.GzPath()
 	)
-	if !Verify(tarBall, BitcoinHash(i.arch, i.os)) {
+	if !Verify(tarBall, i.hash) {
 		os.Remove(tarBall)
 		return fmt.Errorf("Could not verify sha256 sum for %s", tarBall)
 	}
@@ -97,11 +123,7 @@ func (i *Installer) Extract() error {
 		tarBall = i.GzPath()
 		binDir  = filepath.Join(i.prefix, "bin")
 	)
-	index, err := TarDir(tarBall)
-	if err != nil {
-		return err
-	}
-	tarDir := filepath.Join(i.prefix, index)
+	tarDir := filepath.Join(i.prefix, i.tarDir)
 	if !Exists(tarDir) {
 		if err := Extract(i.prefix, tarBall); err != nil {
 			return err
@@ -112,7 +134,9 @@ func (i *Installer) Extract() error {
 		os.Mkdir(binDir, 0755)
 	}
 	for _, e := range i.commands {
-		if err := os.Rename(filepath.Join(tarDir, "bin", e), filepath.Join(binDir, e)); err != nil {
+		src := filepath.Join(tarDir, e)
+		dest := filepath.Join(i.prefix, "bin", filepath.Base(e))
+		if err := os.Rename(src, dest); err != nil {
 			return err
 		}
 	}
@@ -133,8 +157,9 @@ func (i *Installer) Install() error {
 }
 
 func (i *Installer) UnInstall() error {
-	for _, e := range i.commands {
-		os.Remove(filepath.Join(i.prefix, "bin", e))
+	for _, c := range i.commands {
+		file := filepath.Join(i.prefix, "bin", filepath.Base(c))
+		os.Remove(file)
 	}
 	return nil
 }

@@ -37,14 +37,15 @@ func TestInstallerType(t *testing.T) {
 			os:     "linux",
 			prefix: "temp",
 			commands: []string{
-				"test_bitcoin",
-				"bitcoind",
-				"bitcoin-wallet",
-				"bitcoin-qt",
-				"bitcoin-tx",
-				"bitcoin-util",
-				"bitcoin-cli"},
-			uri: "http://10.119.176.16/bitcoin-23.0-x86_64-linux-gnu.tar.gz"}
+				"bin/test_bitcoin",
+				"bin/bitcoind",
+				"bin/bitcoin-wallet",
+				"bin/bitcoin-qt",
+				"bin/bitcoin-tx",
+				"bin/bitcoin-util",
+				"bin/bitcoin-cli"},
+			tarDir: "bitcoin-23.0",
+			uri:    "http://10.119.176.16/bitcoin-23.0-x86_64-linux-gnu.tar.gz"}
 	)
 	if !reflect.DeepEqual(got, expect) {
 		t.Errorf("got %v expect %v", got, expect)
@@ -64,23 +65,39 @@ func TestInstall(t *testing.T) {
 	}
 	defer os.RemoveAll(prefix)
 	var (
-		installer = NewBitcoinInstaller("amd64", "linux", prefix, LAN)
+		installers = []*Installer{
+			NewBitcoinInstaller("amd64", "linux", prefix, LAN),
+			NewLNDInstaller("amd64", "linux", prefix, LAN),
+		}
 	)
-	if err := installer.Install(); err != nil {
-		t.Fatal(err)
-	}
-	if !Exists(installer.GzDir()) {
-		t.Errorf("directory %s expect to exist", installer.GzDir())
-	}
-	if !Exists(installer.GzPath()) {
-		t.Errorf("file %s expect to exist", installer.GzPath())
-	}
-	for _, c := range installer.commands {
-		if !Exists(filepath.Join(installer.prefix, "bin", c)) {
-			t.Errorf("%s does not exist in prefix/bin", c)
+	for _, i := range installers {
+		if err := i.Install(); err != nil {
+			t.Fatal(err)
+		}
+		if !Exists(i.GzDir()) {
+			t.Errorf("directory %s expect to exist", i.GzDir())
+		}
+		if !Exists(i.GzPath()) {
+			t.Errorf("file %s expect to exist", i.GzPath())
+		}
+		for _, c := range i.commands {
+			if !Exists(filepath.Join(i.prefix, "bin", filepath.Base(c))) {
+				t.Errorf("%s does not exist in prefix/bin", c)
+			}
+		}
+		if !Exists(i.GzPath()) {
+			t.Errorf("file %s expect to exist", i.GzPath())
 		}
 	}
-	if !Exists(installer.GzPath()) {
-		t.Errorf("file %s expect to exist", installer.GzPath())
+	for _, i := range installers {
+		if err := i.UnInstall(); err != nil {
+			t.Fatal(err)
+		}
+		for _, c := range i.commands {
+			file := filepath.Join(i.prefix, "bin", filepath.Base(c))
+			if Exists(file) {
+				t.Errorf("%s should not exist", file)
+			}
+		}
 	}
 }
