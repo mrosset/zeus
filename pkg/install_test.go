@@ -23,6 +23,7 @@ import (
 	"os"
 	"path/filepath"
 	"reflect"
+	"runtime"
 	"testing"
 )
 
@@ -67,8 +68,8 @@ func TestInstall(t *testing.T) {
 	defer os.RemoveAll(prefix)
 	var (
 		installers = []*Installer{
-			NewBitcoinInstaller("amd64", "linux", prefix, LAN),
-			NewLNDInstaller("amd64", "linux", prefix, LAN),
+			NewBitcoinInstaller(runtime.GOARCH, runtime.GOOS, prefix, WEB),
+			NewLNDInstaller(runtime.GOARCH, runtime.GOOS, prefix, WEB),
 		}
 	)
 	for _, i := range installers {

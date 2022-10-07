@@ -73,8 +73,7 @@ func NewLNDInstaller(arch, os, prefix string, release MirrorType) *Installer {
 		uri = LAN_URI
 	)
 	if release == WEB {
-		uri = fmt.Sprintf(LND_URI, BITCOIN_VERSION)
-
+		uri = fmt.Sprintf(LND_URI, LND_VERSION)
 	}
 	return &Installer{
 		Description: "Lightning Network Daemon",
