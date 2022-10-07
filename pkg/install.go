@@ -39,7 +39,6 @@ type Installer struct {
 	os          string
 	prefix      string
 	uri         string
-	tarDir      string
 }
 
 func NewBitcoinInstaller(arch, os, prefix string, release MirrorType) *Installer {
@@ -67,9 +66,8 @@ func NewBitcoinInstaller(arch, os, prefix string, release MirrorType) *Installer
 			"bin/bitcoin-tx",
 			"bin/bitcoin-util",
 			"bin/bitcoin-cli"},
-		tarDir: entry.TarDir,
-		hash:   entry.Hash,
-		uri:    fmt.Sprintf("%s/%s", uri, entry.File)}
+		hash: entry.Hash,
+		uri:  fmt.Sprintf("%s/%s", uri, entry.File)}
 }
 
 func NewLNDInstaller(arch, os, prefix string, release MirrorType) *Installer {
@@ -91,9 +89,8 @@ func NewLNDInstaller(arch, os, prefix string, release MirrorType) *Installer {
 		commands: []string{
 			"lnd",
 			"lncli"},
-		tarDir: entry.TarDir,
-		hash:   entry.Hash,
-		uri:    fmt.Sprintf("%s/%s", uri, entry.File)}
+		hash: entry.Hash,
+		uri:  fmt.Sprintf("%s/%s", uri, entry.File)}
 }
 
 func (i *Installer) GzDir() string {
@@ -133,7 +130,11 @@ func (i *Installer) Extract() error {
 		tarBall = i.GzPath()
 		binDir  = filepath.Join(i.prefix, "bin")
 	)
-	tarDir := filepath.Join(i.prefix, i.tarDir)
+	index, err := TarIndex(tarBall)
+	if err != nil {
+		return err
+	}
+	tarDir := filepath.Join(i.prefix, index)
 	if !Exists(tarDir) {
 		if err := Extract(i.prefix, tarBall); err != nil {
 			return err

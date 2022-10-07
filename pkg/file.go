@@ -29,7 +29,7 @@ func Exists(path string) bool {
 }
 
 // Returns index Directory of a Tarball
-func TarDir(path string) (string, error) {
+func TarIndex(path string) (string, error) {
 	fi, err := os.Open(path)
 	if err != nil {
 		return "", err
@@ -39,9 +39,14 @@ func TarDir(path string) (string, error) {
 		return "", err
 	}
 	tr := tar.NewReader(gz)
-	header, err := tr.Next()
-	if err != nil {
-		return "", err
+	for true {
+		header, err := tr.Next()
+		if err != nil {
+			return "", err
+		}
+		if header.Typeflag == tar.TypeDir {
+			return filepath.Clean(header.Name), err
+		}
 	}
-	return filepath.Clean(header.Name), err
+	return "", fmt.Errorf("Tar index directory not found")
 }

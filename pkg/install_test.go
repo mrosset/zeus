@@ -34,6 +34,7 @@ func TestInstallerType(t *testing.T) {
 		got      = NewBitcoinInstaller("amd64", "linux", "temp", LAN)
 		expect   = &Installer{
 			Description: "Bitcoin Core",
+			uri:         "http://10.119.176.16/bitcoin-23.0-x86_64-linux-gnu.tar.gz",
 			hash:        "2CCA490C1F2842884A3C5B0606F179F9F937177DA4EADD628E3F7FD7E25D26D0",
 			arch:        "amd64",
 			os:          "linux",
@@ -45,9 +46,7 @@ func TestInstallerType(t *testing.T) {
 				"bin/bitcoin-qt",
 				"bin/bitcoin-tx",
 				"bin/bitcoin-util",
-				"bin/bitcoin-cli"},
-			tarDir: "bitcoin-23.0",
-			uri:    "http://10.119.176.16/bitcoin-23.0-x86_64-linux-gnu.tar.gz"}
+				"bin/bitcoin-cli"}}
 	)
 	if !reflect.DeepEqual(got, expect) {
 		t.Errorf("got %v expect %v", got, expect)
@@ -84,7 +83,7 @@ func TestInstall(t *testing.T) {
 		}
 		for _, c := range i.commands {
 			if !Exists(filepath.Join(i.prefix, "bin", filepath.Base(c))) {
-				t.Errorf("%s does not exist in prefix/bin", c)
+				t.Errorf("%s does not exist in %s/bin", c, i.prefix)
 			}
 		}
 		if !Exists(i.GzPath()) {

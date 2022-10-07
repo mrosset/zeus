@@ -43,9 +43,8 @@ const (
 )
 
 type Tarball struct {
-	Hash   string
-	File   string
-	TarDir string
+	Hash string
+	File string
 }
 
 type UpstreamFiles map[string]map[string]Tarball
@@ -63,24 +62,20 @@ func (u UpstreamFiles) Entry(arch, os string) (Tarball, error) {
 
 var bitcoinUpstream = UpstreamFiles{
 	"amd64": {"linux": Tarball{
-		Hash:   "2CCA490C1F2842884A3C5B0606F179F9F937177DA4EADD628E3F7FD7E25D26D0",
-		TarDir: fmt.Sprintf("bitcoin-%s", BITCOIN_VERSION),
-		File:   fmt.Sprintf("bitcoin-%s-x86_64-linux-gnu.tar.gz", BITCOIN_VERSION)}},
+		Hash: "2CCA490C1F2842884A3C5B0606F179F9F937177DA4EADD628E3F7FD7E25D26D0",
+		File: fmt.Sprintf("bitcoin-%s-x86_64-linux-gnu.tar.gz", BITCOIN_VERSION)}},
 	"ppc64le": {"linux": Tarball{
-		Hash:   "217DD0469D0F4962D22818C368358575F6A0ABCBA8804807BB75325EB2F28B19",
-		TarDir: fmt.Sprintf("bitcoin-%s", BITCOIN_VERSION),
-		File:   fmt.Sprintf("bitcoin-%s-powerpc64le-linux-gnu.tar.gz", BITCOIN_VERSION)}},
+		Hash: "217DD0469D0F4962D22818C368358575F6A0ABCBA8804807BB75325EB2F28B19",
+		File: fmt.Sprintf("bitcoin-%s-powerpc64le-linux-gnu.tar.gz", BITCOIN_VERSION)}},
 }
 
 var lndUpstream = UpstreamFiles{
 	"amd64": {"linux": Tarball{
-		Hash:   "0673768E657AC004367D07C20395D544A3D1DF926BE1A1990A17E23A8A91D4FB",
-		TarDir: fmt.Sprintf("lnd-linux-amd64-v%s", LND_VERSION),
-		File:   fmt.Sprintf("lnd-linux-amd64-v%s.tar.gz", LND_VERSION)}},
+		Hash: "0673768E657AC004367D07C20395D544A3D1DF926BE1A1990A17E23A8A91D4FB",
+		File: fmt.Sprintf("lnd-linux-amd64-v%s.tar.gz", LND_VERSION)}},
 	"ppc64le": {"linux": Tarball{
-		Hash:   "0673768E657AC004367D07C20395D544A3D1DF926BE1A1990A17E23A8A91D4FB",
-		TarDir: fmt.Sprintf("lnd-linux-amd64-v%s", LND_VERSION),
-		File:   fmt.Sprintf("lnd-linux-amd64-v%s.tar.gz", LND_VERSION)}},
+		Hash: "0673768E657AC004367D07C20395D544A3D1DF926BE1A1990A17E23A8A91D4FB",
+		File: fmt.Sprintf("lnd-linux-amd64-v%s.tar.gz", LND_VERSION)}},
 }
 
 // Download URI to DIR path. Returns downloaded file path
