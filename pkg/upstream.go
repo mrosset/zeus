@@ -61,19 +61,27 @@ func (u UpstreamFiles) Entry(arch, os string) (Tarball, error) {
 	return entry, nil
 }
 
-// https://bitcoincore.org/bin/bitcoin-core-23.0/bitcoin-23.0-x86_64-linux-gnu.tar.gz
 var bitcoinUpstream = UpstreamFiles{
 	"amd64": {"linux": Tarball{
 		Hash:   "2CCA490C1F2842884A3C5B0606F179F9F937177DA4EADD628E3F7FD7E25D26D0",
 		TarDir: fmt.Sprintf("bitcoin-%s", BITCOIN_VERSION),
-		File:   fmt.Sprintf("bitcoin-%s-x86_64-linux-gnu.tar.gz", BITCOIN_VERSION)}}}
+		File:   fmt.Sprintf("bitcoin-%s-x86_64-linux-gnu.tar.gz", BITCOIN_VERSION)}},
+	"ppc64le": {"linux": Tarball{
+		Hash:   "217DD0469D0F4962D22818C368358575F6A0ABCBA8804807BB75325EB2F28B19",
+		TarDir: fmt.Sprintf("bitcoin-%s", BITCOIN_VERSION),
+		File:   fmt.Sprintf("bitcoin-%s-powerpc64le-linux-gnu.tar.gz", BITCOIN_VERSION)}},
+}
 
-// https://github.com/lightningnetwork/lnd/releases/download/v0.15.1-beta/lnd-linux-amd64-v0.15.1-beta.tar.gz
 var lndUpstream = UpstreamFiles{
 	"amd64": {"linux": Tarball{
 		Hash:   "0673768E657AC004367D07C20395D544A3D1DF926BE1A1990A17E23A8A91D4FB",
 		TarDir: fmt.Sprintf("lnd-linux-amd64-v%s", LND_VERSION),
-		File:   fmt.Sprintf("lnd-linux-amd64-v%s.tar.gz", LND_VERSION)}}}
+		File:   fmt.Sprintf("lnd-linux-amd64-v%s.tar.gz", LND_VERSION)}},
+	"ppc64le": {"linux": Tarball{
+		Hash:   "0673768E657AC004367D07C20395D544A3D1DF926BE1A1990A17E23A8A91D4FB",
+		TarDir: fmt.Sprintf("lnd-linux-amd64-v%s", LND_VERSION),
+		File:   fmt.Sprintf("lnd-linux-amd64-v%s.tar.gz", LND_VERSION)}},
+}
 
 // Download URI to DIR path. Returns downloaded file path
 func Fetch(dir, uri string) error {
