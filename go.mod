@@ -4,7 +4,7 @@ go 1.19
 
 require (
 	github.com/codeclysm/extract v2.2.0+incompatible
-	github.com/mrosset/gurl v0.0.0-20190115075543-4e89645fd339
+	github.com/mrosset/gurl v0.0.0-20221007171139-d5d3ba9f8f34
 	github.com/spf13/cobra v1.5.0
 )
 
