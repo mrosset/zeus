@@ -19,8 +19,10 @@ with this program.  If not, see <http://www.gnu.org/licenses/>.
 package cmd
 
 import (
+	"fmt"
 	. "github.com/mrosset/raijin/pkg"
 	"github.com/spf13/cobra"
+	"log"
 	"runtime"
 )
 
@@ -53,9 +55,16 @@ func init() {
 
 func uninstall(cmd *cobra.Command, args []string) {
 	var (
-		prefix    = prefixFlag(cmd)
-		installer = NewBitcoinInstaller(runtime.GOARCH, runtime.GOOS, prefix, LAN)
+		prefix     = prefixFlag(cmd)
+		installers = []*Installer{
+			NewBitcoinInstaller(runtime.GOARCH, runtime.GOOS, prefix, LAN),
+			NewLNDInstaller(runtime.GOARCH, runtime.GOOS, prefix, LAN),
+		}
 	)
-
-	installer.UnInstall()
+	for _, i := range installers {
+		fmt.Println("Uninstalling:\t", i.Description)
+		if err := i.UnInstall(); err != nil {
+			log.Fatal(err)
+		}
+	}
 }

@@ -32,13 +32,14 @@ const (
 type InstallType int
 
 type Installer struct {
-	hash     string
-	commands []string
-	arch     string
-	os       string
-	prefix   string
-	uri      string
-	tarDir   string
+	Description string
+	hash        string
+	commands    []string
+	arch        string
+	os          string
+	prefix      string
+	uri         string
+	tarDir      string
 }
 
 func NewBitcoinInstaller(arch, os, prefix string, release MirrorType) *Installer {
@@ -50,9 +51,10 @@ func NewBitcoinInstaller(arch, os, prefix string, release MirrorType) *Installer
 
 	}
 	return &Installer{
-		arch:   arch,
-		os:     os,
-		prefix: prefix,
+		Description: "Bitcoin Core",
+		arch:        arch,
+		os:          os,
+		prefix:      prefix,
 		commands: []string{
 			"bin/test_bitcoin",
 			"bin/bitcoind",
@@ -75,9 +77,10 @@ func NewLNDInstaller(arch, os, prefix string, release MirrorType) *Installer {
 
 	}
 	return &Installer{
-		arch:   arch,
-		os:     os,
-		prefix: prefix,
+		Description: "Lightning Network Daemon",
+		arch:        arch,
+		os:          os,
+		prefix:      prefix,
 		commands: []string{
 			"lnd",
 			"lncli"},

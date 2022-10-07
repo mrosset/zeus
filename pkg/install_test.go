@@ -32,10 +32,11 @@ func TestInstallerType(t *testing.T) {
 		gzPath   = "temp/gz/bitcoin-23.0-x86_64-linux-gnu.tar.gz"
 		got      = NewBitcoinInstaller("amd64", "linux", "temp", LAN)
 		expect   = &Installer{
-			hash:   "2CCA490C1F2842884A3C5B0606F179F9F937177DA4EADD628E3F7FD7E25D26D0",
-			arch:   "amd64",
-			os:     "linux",
-			prefix: "temp",
+			Description: "Bitcoin Core",
+			hash:        "2CCA490C1F2842884A3C5B0606F179F9F937177DA4EADD628E3F7FD7E25D26D0",
+			arch:        "amd64",
+			os:          "linux",
+			prefix:      "temp",
 			commands: []string{
 				"bin/test_bitcoin",
 				"bin/bitcoind",

@@ -56,13 +56,19 @@ func init() {
 
 func install(cmd *cobra.Command, args []string) {
 	var (
-		confFile  = configFile(cmd)
-		data      = dataDir(cmd)
-		prefix    = prefixFlag(cmd)
-		installer = NewBitcoinInstaller(runtime.GOARCH, runtime.GOOS, prefix, LAN)
+		confFile   = configFile(cmd)
+		data       = dataDir(cmd)
+		prefix     = prefixFlag(cmd)
+		installers = []*Installer{
+			NewBitcoinInstaller(runtime.GOARCH, runtime.GOOS, prefix, LAN),
+			NewLNDInstaller(runtime.GOARCH, runtime.GOOS, prefix, LAN),
+		}
 	)
-	if err := installer.Install(); err != nil {
-		log.Fatal(err)
+	for _, i := range installers {
+		fmt.Println("Installing:\t", i.Description)
+		if err := i.Install(); err != nil {
+			log.Fatal(err)
+		}
 	}
 	// TODO: Prompt before overwriting bitcoind.config
 	if err := NewDefaultConfig(prefix).Write(confFile); err != nil {
