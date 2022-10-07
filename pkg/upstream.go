@@ -22,7 +22,6 @@ import (
 	"context"
 	"fmt"
 	"os"
-	"path"
 
 	"github.com/codeclysm/extract"
 	"github.com/mrosset/gurl"
@@ -30,6 +29,13 @@ import (
 
 const (
 	BITCOIN_VERSION = "23.0"
+)
+
+type MirrorType int
+
+const (
+	LAN MirrorType = iota
+	WEB
 )
 
 type Tarball struct {
@@ -43,13 +49,13 @@ var bitcoinHashes = map[string]map[string]Tarball{
 		fmt.Sprintf("bitcoin-%s-x86_64-linux-gnu.tar.gz", BITCOIN_VERSION)}},
 }
 
-var mirrors = map[string]string{
-	"release": fmt.Sprintf("https://bitcoincore.org/bin/bitcoin-core-%s", BITCOIN_VERSION),
-	"debug":   "http://10.119.176.16",
+var mirrors = map[MirrorType]string{
+	WEB: fmt.Sprintf("https://bitcoincore.org/bin/bitcoin-core-%s", BITCOIN_VERSION),
+	LAN: "http://10.119.176.16",
 }
 
 // Returns the upstream URI for MIRROR,  ARCH and OS
-func BitcoinUri(arch, os, mirror string) string {
+func BitcoinUri(arch, os string, mirror MirrorType) string {
 	return fmt.Sprintf("%s/%s", mirrors[mirror], bitcoinHashes[arch][os].File)
 }
 
@@ -59,21 +65,15 @@ func BitcoinHash(arch, os string) string {
 }
 
 // Download URI to DIR path. Returns downloaded file path
-func Fetch(dir, uri string) (string, error) {
-	if !Exists(dir) {
-		return "", fmt.Errorf("Directory %s does not exist", dir)
-	}
-	file := path.Join(dir, path.Base(uri))
+func Fetch(dir, uri string) error {
 	if err := gurl.Download(dir, uri); err != nil {
-		return "", err
+		return err
 	}
-	return file, nil
+	return nil
 }
 
 // Verify the HASH for PATH. Returns true if verification
 // passes. False if it does not pass
-//
-// TODO: add support for other OS and ARCHs
 func Verify(path, hash string) bool {
 	got, err := Sha256sum(path)
 	if err != nil {

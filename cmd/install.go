@@ -22,7 +22,6 @@ import (
 	"fmt"
 	"log"
 	"os"
-	"path/filepath"
 	"runtime"
 
 	. "github.com/mrosset/raijin/pkg"
@@ -55,74 +54,21 @@ func init() {
 	installCmd.Flags().BoolP("debug", "d", true, "If false use debug URI for downloads")
 }
 
-var tarEntries = []string{"include", "lib", "bin", "share", "README.md"}
-
-func mirrorFlag(cmd *cobra.Command) string {
-	r, err := cmd.Flags().GetBool("debug")
-	if err != nil {
-		log.Fatal(err)
-	}
-	if r {
-		return "debug"
-	} else {
-		return "release"
-	}
-
-}
-
 func install(cmd *cobra.Command, args []string) {
 	var (
-		uri      = BitcoinUri(runtime.GOARCH, runtime.GOOS, mirrorFlag(cmd))
-		prefix   = prefixFlag(cmd)
-		gzDir    = filepath.Join(prefix, "gz")
-		tarBall  = filepath.Join(gzDir, filepath.Base(uri))
-		confFile = configFile(cmd)
-		data     = dataDir(cmd)
+		confFile  = configFile(cmd)
+		data      = dataDir(cmd)
+		prefix    = prefixFlag(cmd)
+		installer = NewBitcoinInstaller(runtime.GOARCH, runtime.GOOS, prefix, LAN)
 	)
-	if Exists(bitcoindCmd(cmd)) {
-		log.Fatalf("Bitcoin already installed in %s", prefix)
-	}
-	fmt.Printf("Installing:\t Bitcoin Core to %s\n", prefix)
-	if !Exists(gzDir) {
-		os.MkdirAll(gzDir, 0775)
-	}
-	if !Exists(tarBall) {
-		fmt.Println("Downloading:\t", uri)
-		_, err := Fetch(gzDir, uri)
-		if err != nil {
-			log.Fatal(err)
-		}
-
-	}
-	if !Verify(tarBall, BitcoinHash(runtime.GOARCH, runtime.GOOS)) {
-		os.Remove(tarBall)
-		log.Fatalf("Could not verify sha256 sum for %s", tarBall)
-	} else {
-		fmt.Println("Verified:\t", filepath.Base(tarBall), "OK")
-	}
-	index, err := TarDir(tarBall)
-	if err != nil {
+	if err := installer.Install(); err != nil {
 		log.Fatal(err)
 	}
-	tarDir := filepath.Join(prefix, index)
-	if !Exists(tarDir) {
-		fmt.Println("Extracting:\t", tarBall, " -> ", prefix)
-		if err := Extract(prefix, tarBall); err != nil {
-			log.Fatal(err)
-		}
-	}
-	defer os.RemoveAll(tarDir)
-	for _, e := range tarEntries {
-		if err := os.Rename(filepath.Join(tarDir, e), filepath.Join(prefix, e)); err != nil {
-			log.Fatal(err)
-		}
-	}
 	// TODO: Prompt before overwriting bitcoind.config
-	fmt.Println("Wrote:\t\t default config file:", confFile)
-
 	if err := NewDefaultConfig(prefix).Write(confFile); err != nil {
 		log.Fatal(err)
 	}
+	fmt.Println("Wrote:\t\t default config file:", confFile)
 	if !Exists(data) {
 		os.Mkdir(data, 0755)
 	}

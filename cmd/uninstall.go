@@ -19,11 +19,9 @@ with this program.  If not, see <http://www.gnu.org/licenses/>.
 package cmd
 
 import (
-	"os"
-
+	. "github.com/mrosset/raijin/pkg"
 	"github.com/spf13/cobra"
-	"log"
-	"path/filepath"
+	"runtime"
 )
 
 // uninstallCmd represents the uninstall command
@@ -55,11 +53,9 @@ func init() {
 
 func uninstall(cmd *cobra.Command, args []string) {
 	var (
-		prefix = prefixFlag(cmd)
+		prefix    = prefixFlag(cmd)
+		installer = NewBitcoinInstaller(runtime.GOARCH, runtime.GOOS, prefix, LAN)
 	)
-	for _, e := range tarEntries {
-		if err := os.RemoveAll(filepath.Join(prefix, e)); err != nil {
-			log.Fatal(err)
-		}
-	}
+
+	installer.UnInstall()
 }

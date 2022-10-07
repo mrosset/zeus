@@ -19,16 +19,13 @@ with this program.  If not, see <http://www.gnu.org/licenses/>.
 package raijin
 
 import (
-	"io/ioutil"
-	"os"
-	"path/filepath"
 	"testing"
 )
 
 func TestBitcoinUri(t *testing.T) {
 	var (
 		expect = "http://10.119.176.16/bitcoin-23.0-x86_64-linux-gnu.tar.gz"
-		got    = BitcoinUri("amd64", "linux", "debug")
+		got    = BitcoinUri("amd64", "linux", LAN)
 	)
 	if expect != got {
 		t.Errorf("Expected URI %s got %s", expect, got)
@@ -42,35 +39,5 @@ func TestBitcoinHash(t *testing.T) {
 	)
 	if expect != got {
 		t.Errorf("Expected Hash %s got %s", expect, got)
-	}
-}
-
-func TestFetchExtract(t *testing.T) {
-	tmp, err := ioutil.TempDir(os.TempDir(), "raijin")
-	if err != nil {
-		t.Fatal(err)
-	}
-	defer os.RemoveAll(tmp)
-	gzfile, err := Fetch(tmp, BitcoinUri("amd64", "linux", "debug"))
-	if err != nil {
-		t.Fatal(err)
-	}
-	defer os.RemoveAll(gzfile)
-	if !Verify(gzfile, BitcoinHash("amd64", "linux")) {
-		t.Error("File could not be verifed")
-	}
-	index, err := TarDir(gzfile)
-	if err != nil {
-		t.Fatal(err)
-	}
-	if index != "bitcoin-23.0" {
-		t.Errorf("Expected tar index bitcoin-23.0 got %s", index)
-	}
-	if err = Extract(tmp, gzfile); err != nil {
-		t.Fatal(err)
-	}
-	expect := filepath.Join(tmp, "bitcoin-23.0", "README.md")
-	if !Exists(expect) {
-		t.Errorf("File %s does not", expect)
 	}
 }
