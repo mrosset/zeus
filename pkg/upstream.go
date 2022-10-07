@@ -50,6 +50,17 @@ type Tarball struct {
 
 type UpstreamFiles map[string]map[string]Tarball
 
+func (u UpstreamFiles) Entry(arch, os string) (Tarball, error) {
+	var (
+		entry, ok = u[arch][os]
+	)
+
+	if !ok {
+		return entry, fmt.Errorf("Could not find Tarball entry for arch: %s os: %s", arch, os)
+	}
+	return entry, nil
+}
+
 // https://bitcoincore.org/bin/bitcoin-core-23.0/bitcoin-23.0-x86_64-linux-gnu.tar.gz
 var bitcoinUpstream = UpstreamFiles{
 	"amd64": {"linux": Tarball{
@@ -63,11 +74,6 @@ var lndUpstream = UpstreamFiles{
 		Hash:   "0673768E657AC004367D07C20395D544A3D1DF926BE1A1990A17E23A8A91D4FB",
 		TarDir: fmt.Sprintf("lnd-linux-amd64-v%s", LND_VERSION),
 		File:   fmt.Sprintf("lnd-linux-amd64-v%s.tar.gz", LND_VERSION)}}}
-
-// Returns the sha256 hash for ARCH and OS
-func BitcoinHash(arch, os string) string {
-	return bitcoinUpstream[arch][os].Hash
-}
 
 // Download URI to DIR path. Returns downloaded file path
 func Fetch(dir, uri string) error {

@@ -22,12 +22,20 @@ import (
 	"testing"
 )
 
-func TestBitcoinHash(t *testing.T) {
+func TestEntry(t *testing.T) {
+	entry, err := bitcoinUpstream.Entry("amd64", "linux")
+	if err != nil {
+		t.Fatal(err)
+	}
 	var (
 		expect = "2CCA490C1F2842884A3C5B0606F179F9F937177DA4EADD628E3F7FD7E25D26D0"
-		got    = BitcoinHash("amd64", "linux")
+		got    = entry.Hash
 	)
 	if expect != got {
 		t.Errorf("Expected Hash %s got %s", expect, got)
+	}
+	entry, err = bitcoinUpstream.Entry("amd64", "bork")
+	if err == nil {
+		t.Errorf("Entry() should fail")
 	}
 }

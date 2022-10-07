@@ -68,8 +68,8 @@ func TestInstall(t *testing.T) {
 	defer os.RemoveAll(prefix)
 	var (
 		installers = []*Installer{
-			NewBitcoinInstaller(runtime.GOARCH, runtime.GOOS, prefix, WEB),
-			NewLNDInstaller(runtime.GOARCH, runtime.GOOS, prefix, WEB),
+			NewBitcoinInstaller(runtime.GOARCH, runtime.GOOS, prefix, LAN),
+			NewLNDInstaller(runtime.GOARCH, runtime.GOOS, prefix, LAN),
 		}
 	)
 	for _, i := range installers {

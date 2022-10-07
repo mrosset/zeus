@@ -50,6 +50,10 @@ func NewBitcoinInstaller(arch, os, prefix string, release MirrorType) *Installer
 		uri = fmt.Sprintf(BITCOIN_URI, BITCOIN_VERSION)
 
 	}
+	entry, err := bitcoinUpstream.Entry(arch, os)
+	if err != nil {
+		panic(err)
+	}
 	return &Installer{
 		Description: "Bitcoin Core",
 		arch:        arch,
@@ -63,9 +67,9 @@ func NewBitcoinInstaller(arch, os, prefix string, release MirrorType) *Installer
 			"bin/bitcoin-tx",
 			"bin/bitcoin-util",
 			"bin/bitcoin-cli"},
-		tarDir: bitcoinUpstream[arch][os].TarDir,
-		hash:   bitcoinUpstream[arch][os].Hash,
-		uri:    fmt.Sprintf("%s/%s", uri, bitcoinUpstream[arch][os].File)}
+		tarDir: entry.TarDir,
+		hash:   entry.Hash,
+		uri:    fmt.Sprintf("%s/%s", uri, entry.File)}
 }
 
 func NewLNDInstaller(arch, os, prefix string, release MirrorType) *Installer {
@@ -75,6 +79,10 @@ func NewLNDInstaller(arch, os, prefix string, release MirrorType) *Installer {
 	if release == WEB {
 		uri = fmt.Sprintf(LND_URI, LND_VERSION)
 	}
+	entry, err := lndUpstream.Entry(arch, os)
+	if err != nil {
+		panic(err)
+	}
 	return &Installer{
 		Description: "Lightning Network Daemon",
 		arch:        arch,
@@ -83,9 +91,9 @@ func NewLNDInstaller(arch, os, prefix string, release MirrorType) *Installer {
 		commands: []string{
 			"lnd",
 			"lncli"},
-		tarDir: lndUpstream[arch][os].TarDir,
-		hash:   lndUpstream[arch][os].Hash,
-		uri:    fmt.Sprintf("%s/%s", uri, lndUpstream[arch][os].File)}
+		tarDir: entry.TarDir,
+		hash:   entry.Hash,
+		uri:    fmt.Sprintf("%s/%s", uri, entry.File)}
 }
 
 func (i *Installer) GzDir() string {
