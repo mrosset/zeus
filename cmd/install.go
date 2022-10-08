@@ -19,7 +19,6 @@ with this program.  If not, see <http://www.gnu.org/licenses/>.
 package cmd
 
 import (
-	"os"
 	"runtime"
 
 	. "github.com/mrosset/raijin/pkg"
@@ -75,28 +74,28 @@ func lighting(cmd *cobra.Command) bool {
 	return flag
 }
 
-func install(cmd *cobra.Command, args []string) {
-	var (
-		confFile   = configFile(cmd)
-		data       = dataDir(cmd)
-		prefix     = prefixFlag(cmd)
-		installers = []*Installer{
-			NewBitcoinInstaller(runtime.GOARCH, runtime.GOOS, prefix, mirror(cmd)),
-			NewLNDInstaller(runtime.GOARCH, runtime.GOOS, prefix, mirror(cmd)),
-		}
-	)
-	for _, i := range installers {
-		pterm.Info.Println("Installing:", i.Description)
-		if err := i.Install(); err != nil {
-			pterm.Fatal.Println(err)
-		}
-	}
-	// TODO: Prompt before overwriting bitcoind.config
-	if err := NewDefaultConfig(prefix).Write(confFile); err != nil {
+func doInstall(i Installer) {
+	pterm.Info.Println("Installing:", i.Description)
+	if err := i.Install(); err != nil {
 		pterm.Fatal.Println(err)
 	}
-	pterm.Info.Println("Wrote: default config file:", confFile)
-	if !Exists(data) {
-		os.Mkdir(data, 0755)
+}
+
+func install(cmd *cobra.Command, args []string) {
+	var (
+		prefix   = prefixFlag(cmd)
+		bitcoind = NewBitcoinInstaller(runtime.GOARCH, runtime.GOOS, prefix, mirror(cmd))
+		lnd      = NewLNDInstaller(runtime.GOARCH, runtime.GOOS, prefix, mirror(cmd))
+	)
+
+	doInstall(Installer(bitcoind))
+
+	if err := bitcoind.PostInstall(); err != nil {
+		pterm.Fatal.Println(err)
+	}
+	pterm.Info.Println("Wrote: default config file:", bitcoind.Config())
+
+	if lighting(cmd) {
+		doInstall(lnd)
 	}
 }

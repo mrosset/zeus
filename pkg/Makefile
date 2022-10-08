@@ -15,31 +15,6 @@
 # You should have received a copy of the GNU General Public License along
 # with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-CMD = ./raijin --prefix=$(PWD)/temp
-
-.NOTPARALLEL:
-.PHONY: raijin
-
-raijin:
-	go build -v
-	strip ./$@
-
-start: raijin
-	$(CMD) $@
-
-test-uinstall: raijin
-	$(CMD) uninstall
-
-test-install: check raijin test-uinstall
-	$(CMD) install -d -l
-
 check:
-	$(MAKE) -C ./pkg
-
-install:
-	go install
-
-clean:
-	-$(CMD) uninstall
-	-rm raijin
-	-rm temp/bitcoin.conf
+	-rm testdata/default.conf
+	go test -v

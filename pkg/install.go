@@ -41,7 +41,25 @@ type Installer struct {
 	uri         string
 }
 
-func NewBitcoinInstaller(arch, os, prefix string, release MirrorType) *Installer {
+type BitcoindInstaller Installer
+
+// Returns the full path of the bitcoind config file.
+func (i BitcoindInstaller) Config() string {
+	return filepath.Join(i.prefix, "bitcoin.conf")
+}
+
+func (i BitcoindInstaller) PostInstall() error {
+	// FIXME: Prompt before overwriting bitcoind.config
+	if err := NewDefaultConfig(i.prefix).Write(i.Config()); err != nil {
+		return err
+	}
+	// if !Exists(data) {
+	//	os.Mkdir(data, 0755)
+	// }
+	return nil
+}
+
+func NewBitcoinInstaller(arch, os, prefix string, release MirrorType) BitcoindInstaller {
 	var (
 		uri = LAN_URI
 	)
@@ -53,7 +71,7 @@ func NewBitcoinInstaller(arch, os, prefix string, release MirrorType) *Installer
 	if err != nil {
 		panic(err)
 	}
-	return &Installer{
+	return BitcoindInstaller{
 		Description: "Bitcoin Core",
 		arch:        arch,
 		os:          os,
@@ -70,7 +88,7 @@ func NewBitcoinInstaller(arch, os, prefix string, release MirrorType) *Installer
 		uri:  fmt.Sprintf("%s/%s", uri, entry.File)}
 }
 
-func NewLNDInstaller(arch, os, prefix string, release MirrorType) *Installer {
+func NewLNDInstaller(arch, os, prefix string, release MirrorType) Installer {
 	var (
 		uri = LAN_URI
 	)
@@ -81,7 +99,7 @@ func NewLNDInstaller(arch, os, prefix string, release MirrorType) *Installer {
 	if err != nil {
 		panic(err)
 	}
-	return &Installer{
+	return Installer{
 		Description: "Lightning Network Daemon",
 		arch:        arch,
 		os:          os,

@@ -55,8 +55,8 @@ func init() {
 func uninstall(cmd *cobra.Command, args []string) {
 	var (
 		prefix     = prefixFlag(cmd)
-		installers = []*Installer{
-			NewBitcoinInstaller(runtime.GOARCH, runtime.GOOS, prefix, LAN),
+		installers = []Installer{
+			Installer(NewBitcoinInstaller(runtime.GOARCH, runtime.GOOS, prefix, LAN)),
 			NewLNDInstaller(runtime.GOARCH, runtime.GOOS, prefix, LAN),
 		}
 	)
