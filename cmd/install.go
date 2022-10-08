@@ -19,7 +19,6 @@ with this program.  If not, see <http://www.gnu.org/licenses/>.
 package cmd
 
 import (
-	"log"
 	"os"
 	"runtime"
 
@@ -51,7 +50,29 @@ func init() {
 
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:
-	installCmd.Flags().BoolP("debug", "d", true, "If false use debug URI for downloads")
+	installCmd.Flags().BoolP("debug", "d", false, "If false use debug URI for downloads")
+	installCmd.Flags().BoolP("lighting", "l", false, "If true installing Lightning Network Daemon")
+}
+
+func mirror(cmd *cobra.Command) MirrorType {
+	debug, err := cmd.Flags().GetBool("debug")
+	if err != nil {
+		pterm.Fatal.Println(err)
+	}
+	switch debug {
+	case true:
+		return LAN
+	default:
+		return WEB
+	}
+}
+
+func lighting(cmd *cobra.Command) bool {
+	flag, err := cmd.Flags().GetBool("lighting")
+	if err != nil {
+		pterm.Fatal.Println(err)
+	}
+	return flag
 }
 
 func install(cmd *cobra.Command, args []string) {
@@ -60,19 +81,19 @@ func install(cmd *cobra.Command, args []string) {
 		data       = dataDir(cmd)
 		prefix     = prefixFlag(cmd)
 		installers = []*Installer{
-			NewBitcoinInstaller(runtime.GOARCH, runtime.GOOS, prefix, WEB),
-			NewLNDInstaller(runtime.GOARCH, runtime.GOOS, prefix, WEB),
+			NewBitcoinInstaller(runtime.GOARCH, runtime.GOOS, prefix, mirror(cmd)),
+			NewLNDInstaller(runtime.GOARCH, runtime.GOOS, prefix, mirror(cmd)),
 		}
 	)
 	for _, i := range installers {
 		pterm.Info.Println("Installing:", i.Description)
 		if err := i.Install(); err != nil {
-			log.Fatal(err)
+			pterm.Fatal.Println(err)
 		}
 	}
 	// TODO: Prompt before overwriting bitcoind.config
 	if err := NewDefaultConfig(prefix).Write(confFile); err != nil {
-		log.Fatal(err)
+		pterm.Fatal.Println(err)
 	}
 	pterm.Info.Println("Wrote: default config file:", confFile)
 	if !Exists(data) {

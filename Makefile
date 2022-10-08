@@ -31,7 +31,7 @@ test-uinstall: raijin
 	$(CMD) uninstall
 
 test-install: check raijin test-uinstall
-	$(CMD) install
+	$(CMD) install -d
 
 check:
 	-rm pkg/testdata/default.conf

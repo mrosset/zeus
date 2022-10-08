@@ -19,7 +19,6 @@ with this program.  If not, see <http://www.gnu.org/licenses/>.
 package cmd
 
 import (
-	"log"
 	"os"
 	"path/filepath"
 
@@ -58,7 +57,7 @@ func Execute() {
 func init() {
 	home, err := os.UserHomeDir()
 	if err != nil {
-		log.Fatal(err)
+		pterm.Fatal.Println(err)
 	}
 
 	// Here you will define your flags and configuration settings.
@@ -72,14 +71,14 @@ func init() {
 	// rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }
 
-// Checks that the prefix flag path exists. If it does not logs a
+// Checks that the prefix flag path exists. If it does not, log a
 // fatal error.
 func checkPrefix(cmd *cobra.Command) {
 	var (
 		prefix = prefixFlag(cmd)
 	)
 	if !Exists(prefix) {
-		log.Fatalf("%s prefix does not exists. Have you run `raijin install`?", prefix)
+		pterm.Fatal.Printf("%s prefix does not exists. Have you run `raijin install`?", prefix)
 	}
 }
 
@@ -102,7 +101,7 @@ func dataDir(cmd *cobra.Command) string {
 func prefixFlag(cmd *cobra.Command) string {
 	prefix, err := cmd.Flags().GetString("prefix")
 	if err != nil {
-		log.Fatal(err)
+		pterm.Fatal.Println(err)
 	}
 	return prefix
 }
