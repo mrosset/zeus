@@ -24,6 +24,8 @@ import (
 	"path/filepath"
 
 	. "github.com/mrosset/raijin/pkg"
+	"github.com/pterm/pterm"
+	"github.com/pterm/pterm/putils"
 	"github.com/spf13/cobra"
 )
 
@@ -45,10 +47,12 @@ to quickly create a Cobra application.`,
 // Execute adds all child commands to the root command and sets flags appropriately.
 // This is called by main.main(). It only needs to happen once to the rootCmd.
 func Execute() {
+	pterm.DefaultBigText.WithLetters(putils.LettersFromString("Raijin")).Render()
 	err := rootCmd.Execute()
 	if err != nil {
 		os.Exit(1)
 	}
+	pterm.Println()
 }
 
 func init() {
@@ -65,7 +69,7 @@ func init() {
 	rootCmd.PersistentFlags().String("prefix", filepath.Join(home, "bitcoin"), "Directory Bitcoin Core is to be installed")
 	// Cobra also supports local flags, which will only run
 	// when this action is called directly.
-	rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	// rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }
 
 // Checks that the prefix flag path exists. If it does not logs a

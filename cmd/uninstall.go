@@ -19,8 +19,8 @@ with this program.  If not, see <http://www.gnu.org/licenses/>.
 package cmd
 
 import (
-	"fmt"
 	. "github.com/mrosset/raijin/pkg"
+	"github.com/pterm/pterm"
 	"github.com/spf13/cobra"
 	"log"
 	"runtime"
@@ -62,7 +62,7 @@ func uninstall(cmd *cobra.Command, args []string) {
 		}
 	)
 	for _, i := range installers {
-		fmt.Println("Uninstalling:\t", i.Description)
+		pterm.Info.Println("Uninstalling:", i.Description)
 		if err := i.UnInstall(); err != nil {
 			log.Fatal(err)
 		}

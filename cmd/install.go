@@ -19,12 +19,12 @@ with this program.  If not, see <http://www.gnu.org/licenses/>.
 package cmd
 
 import (
-	"fmt"
 	"log"
 	"os"
 	"runtime"
 
 	. "github.com/mrosset/raijin/pkg"
+	"github.com/pterm/pterm"
 	"github.com/spf13/cobra"
 )
 
@@ -65,7 +65,7 @@ func install(cmd *cobra.Command, args []string) {
 		}
 	)
 	for _, i := range installers {
-		fmt.Println("Installing:\t", i.Description)
+		pterm.Info.Println("Installing:", i.Description)
 		if err := i.Install(); err != nil {
 			log.Fatal(err)
 		}
@@ -74,7 +74,7 @@ func install(cmd *cobra.Command, args []string) {
 	if err := NewDefaultConfig(prefix).Write(confFile); err != nil {
 		log.Fatal(err)
 	}
-	fmt.Println("Wrote:\t\t default config file:", confFile)
+	pterm.Info.Println("Wrote: default config file:", confFile)
 	if !Exists(data) {
 		os.Mkdir(data, 0755)
 	}
