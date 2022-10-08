@@ -22,9 +22,13 @@ import (
 	"testing"
 )
 
+var (
+	testTarFile = "testdata/test-0.1.0.tar.gz"
+)
+
 func TestTarIndex(t *testing.T) {
 	var (
-		got, err = TarIndex("testdata/tardir.tar.gz")
+		got, err = TarIndex(testTarFile)
 		expect   = "top"
 	)
 	if err != nil {

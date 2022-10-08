@@ -19,13 +19,52 @@ with this program.  If not, see <http://www.gnu.org/licenses/>.
 package raijin
 
 import (
+	"fmt"
+	"io"
 	"io/ioutil"
+	"net/http"
+	"net/http/httptest"
 	"os"
 	"path/filepath"
 	"reflect"
 	"runtime"
+	"strconv"
 	"testing"
 )
+
+var (
+	server = httptest.NewServer(&testHandler{})
+)
+
+type testHandler struct {
+}
+
+func NewTestInstaller(arch, os, prefix string) *Installer {
+	return &Installer{
+		Description: "Test Installer",
+		arch:        arch,
+		os:          os,
+		prefix:      prefix,
+		commands: []string{
+			"bin/lnd"},
+		hash: "4906F5BC7569674997A08D801809A6D3F829891298EF45331FF2FFB12BCE6325",
+		uri:  fmt.Sprintf("%s/%s", server.URL, testTarFile)}
+}
+
+func (t *testHandler) ServeHTTP(w http.ResponseWriter, req *http.Request) {
+	size, err := Size(testTarFile)
+	if err != nil {
+		panic(err)
+	}
+	file, err := os.Open(testTarFile)
+	if err != nil {
+		panic(err)
+	}
+	defer file.Close()
+	w.Header().Set("Accept-Ranges", "bytes")
+	w.Header().Set("Content-Length", strconv.Itoa(int(size)))
+	io.Copy(w, file)
+}
 
 func TestInstallerType(t *testing.T) {
 	var (
@@ -65,40 +104,19 @@ func TestInstall(t *testing.T) {
 		t.Fatal(err)
 	}
 	defer os.RemoveAll(prefix)
-	var (
-		installers = []*Installer{
-			NewBitcoinInstaller(runtime.GOARCH, runtime.GOOS, prefix, LAN),
-			NewLNDInstaller(runtime.GOARCH, runtime.GOOS, prefix, LAN),
-		}
-	)
-	for _, i := range installers {
-		if err := i.Install(); err != nil {
-			t.Fatal(err)
-		}
-		if !Exists(i.GzDir()) {
-			t.Errorf("directory %s expect to exist", i.GzDir())
-		}
-		if !Exists(i.GzPath()) {
-			t.Errorf("file %s expect to exist", i.GzPath())
-		}
-		for _, c := range i.commands {
-			if !Exists(filepath.Join(i.prefix, "bin", filepath.Base(c))) {
-				t.Errorf("%s does not exist in %s/bin", c, i.prefix)
-			}
-		}
-		if !Exists(i.GzPath()) {
-			t.Errorf("file %s expect to exist", i.GzPath())
-		}
+	i := NewTestInstaller(runtime.GOARCH, runtime.GOOS, prefix)
+	if err := i.Install(); err != nil {
+		t.Fatal(err)
 	}
-	for _, i := range installers {
-		if err := i.UnInstall(); err != nil {
-			t.Fatal(err)
-		}
-		for _, c := range i.commands {
-			file := filepath.Join(i.prefix, "bin", filepath.Base(c))
-			if Exists(file) {
-				t.Errorf("%s should not exist", file)
-			}
+	if !Exists(i.GzDir()) {
+		t.Errorf("directory %s expect to exist", i.GzDir())
+	}
+	if !Exists(i.GzPath()) {
+		t.Errorf("file %s expect to exist", i.GzPath())
+	}
+	for _, c := range i.commands {
+		if !Exists(filepath.Join(i.prefix, "bin", filepath.Base(c))) {
+			t.Errorf("%s does not exist in %s/bin", c, i.prefix)
 		}
 	}
 }

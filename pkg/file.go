@@ -10,6 +10,15 @@ import (
 	"path/filepath"
 )
 
+// Returns the size of PATH file
+func Size(path string) (int64, error) {
+	fi, err := os.Stat(path)
+	if err != nil {
+		return 0, err
+	}
+	return fi.Size(), nil
+}
+
 // Open FILE path and returns it's sha256sum
 func Sha256sum(file string) (hash string, err error) {
 	h := sha256.New()
