@@ -29,10 +29,11 @@ import (
 
 const (
 	BITCOIN_VERSION = "23.0"
-	BITCOIN_URI     = "https://bitcoincore.org/bin/bitcoin-core-%s"
 	LND_VERSION     = "0.15.1-beta"
-	LND_URI         = "https://github.com/lightningnetwork/lnd/releases/download/%s"
-	LAN_URI         = "http://10.119.176.16"
+
+	BITCOIN_URI = "https://bitcoincore.org/bin/bitcoin-core-%s"
+	LND_URI     = "https://github.com/lightningnetwork/lnd/releases/download/v%s"
+	LAN_URI     = "http://10.119.176.16"
 )
 
 type MirrorType int
@@ -67,6 +68,9 @@ var bitcoinUpstream = UpstreamFiles{
 	"ppc64le": {"linux": Tarball{
 		Hash: "217DD0469D0F4962D22818C368358575F6A0ABCBA8804807BB75325EB2F28B19",
 		File: fmt.Sprintf("bitcoin-%s-powerpc64le-linux-gnu.tar.gz", BITCOIN_VERSION)}},
+	"arm64": {"linux": Tarball{
+		Hash: "06F4C78271A77752BA5990D60D81B1751507F77EFDA1E5981B4E92FD4D9969FB",
+		File: fmt.Sprintf("bitcoin-%s-aarch64-linux-gnu.tar.gz", BITCOIN_VERSION)}},
 }
 
 var lndUpstream = UpstreamFiles{
@@ -76,6 +80,9 @@ var lndUpstream = UpstreamFiles{
 	"ppc64le": {"linux": Tarball{
 		Hash: "0673768E657AC004367D07C20395D544A3D1DF926BE1A1990A17E23A8A91D4FB",
 		File: fmt.Sprintf("lnd-linux-amd64-v%s.tar.gz", LND_VERSION)}},
+	"arm64": {"linux": Tarball{
+		Hash: "8A1EE8B000173C5F938BB6B47F1E6BF95A02523128304E2CB420C98182094296",
+		File: fmt.Sprintf("lnd-linux-arm64-v%s.tar.gz", LND_VERSION)}},
 }
 
 // Download URI to DIR path. Returns downloaded file path

@@ -60,8 +60,8 @@ func install(cmd *cobra.Command, args []string) {
 		data       = dataDir(cmd)
 		prefix     = prefixFlag(cmd)
 		installers = []*Installer{
-			NewBitcoinInstaller(runtime.GOARCH, runtime.GOOS, prefix, LAN),
-			NewLNDInstaller(runtime.GOARCH, runtime.GOOS, prefix, LAN),
+			NewBitcoinInstaller(runtime.GOARCH, runtime.GOOS, prefix, WEB),
+			NewLNDInstaller(runtime.GOARCH, runtime.GOOS, prefix, WEB),
 		}
 	)
 	for _, i := range installers {
