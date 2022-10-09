@@ -5,6 +5,7 @@ go 1.18
 require (
 	github.com/codeclysm/extract v2.2.0+incompatible
 	github.com/mrosset/gurl v0.0.2-0.20221009023051-bdf52565b306
+	github.com/pterm/pterm v0.12.49
 	github.com/spf13/cobra v1.5.0
 	github.com/subpop/go-ini v0.1.4
 )
@@ -15,12 +16,11 @@ require (
 	github.com/containerd/console v1.0.3 // indirect
 	github.com/gookit/color v1.5.2 // indirect
 	github.com/h2non/filetype v1.1.3 // indirect
-	github.com/inconshreveable/mousetrap v1.0.0 // indirect
+	github.com/inconshreveable/mousetrap v1.0.1 // indirect
 	github.com/juju/errors v1.0.0 // indirect
 	github.com/lithammer/fuzzysearch v1.1.5 // indirect
 	github.com/mattn/go-runewidth v0.0.14 // indirect
-	github.com/mrosset/util v0.0.2-0.20221009014018-6e224258489f // indirect
-	github.com/pterm/pterm v0.12.49 // indirect
+	github.com/mrosset/util v0.0.3 // indirect
 	github.com/rivo/uniseg v0.4.2 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
 	github.com/stretchr/testify v1.8.0 // indirect
