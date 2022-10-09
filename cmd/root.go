@@ -24,7 +24,6 @@ import (
 
 	. "github.com/mrosset/raijin/pkg"
 	"github.com/pterm/pterm"
-	"github.com/pterm/pterm/putils"
 	"github.com/spf13/cobra"
 )
 
@@ -43,10 +42,22 @@ to quickly create a Cobra application.`,
 	// Run: func(cmd *cobra.Command, args []string) { },
 }
 
+func printLogo(logo string) {
+	var (
+		from    = pterm.NewRGB(242, 169, 0)
+		to      = pterm.NewRGB(255, 255, 255)
+		letters = pterm.NewLettersFromString(logo)
+	)
+	for i := 0; i < len(letters); i++ {
+		letters[i].RGB = from.Fade(0, float32(len(logo)), float32(i), to)
+	}
+	pterm.DefaultBigText.WithLetters(letters).Render()
+}
+
 // Execute adds all child commands to the root command and sets flags appropriately.
 // This is called by main.main(). It only needs to happen once to the rootCmd.
 func Execute() {
-	pterm.DefaultBigText.WithLetters(putils.LettersFromString("Raijin")).Render()
+	printLogo("Raijin")
 	err := rootCmd.Execute()
 	if err != nil {
 		os.Exit(1)
