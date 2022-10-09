@@ -87,10 +87,7 @@ var lndUpstream = UpstreamFiles{
 
 // Download URI to DIR path. Returns downloaded file path
 func Fetch(dir, uri string) error {
-	if err := gurl.Download(dir, uri); err != nil {
-		return err
-	}
-	return nil
+	return gurl.DownloadHideAfter(dir, uri)
 }
 
 // Verify the HASH for PATH. Returns true if verification
