@@ -19,7 +19,7 @@ with this program.  If not, see <http://www.gnu.org/licenses/>.
 package cmd
 
 import (
-	. "github.com/mrosset/raijin/pkg"
+	. "github.com/mrosset/zeus/pkg"
 	"github.com/pterm/pterm"
 	"github.com/spf13/cobra"
 	"runtime"

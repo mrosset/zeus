@@ -1,4 +1,4 @@
-module github.com/mrosset/raijin
+module github.com/mrosset/zeus
 
 go 1.18
 

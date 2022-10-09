@@ -19,7 +19,7 @@ with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package main
 
-import "github.com/mrosset/raijin/cmd"
+import "github.com/mrosset/zeus/cmd"
 
 func main() {
 	cmd.Execute()

@@ -22,7 +22,7 @@ import (
 	"os"
 	"path/filepath"
 
-	. "github.com/mrosset/raijin/pkg"
+	. "github.com/mrosset/zeus/pkg"
 	"github.com/pterm/pterm"
 	"github.com/spf13/cobra"
 )

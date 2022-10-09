@@ -1,4 +1,4 @@
-package raijin
+package zeus
 
 import (
 	"archive/tar"
