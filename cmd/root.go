@@ -55,7 +55,11 @@ func printLogo() {
 	for i := 0; i < len(letters); i++ {
 		letters[i].RGB = from.Fade(0, float32(len(letters)), float32(i), to)
 	}
-	pterm.DefaultBigText.WithLetters(letters).Render()
+	title, err := pterm.DefaultBigText.WithLetters(letters).Srender()
+	if err != nil {
+		pterm.Fatal.Println(err)
+	}
+	pterm.DefaultCenter.Print(title)
 }
 
 // Execute adds all child commands to the root command and sets flags appropriately.
