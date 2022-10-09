@@ -29,19 +29,18 @@ import (
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
-	Use:   "raijin",
+	Use:   ShortName,
 	Short: "A utility to install Bitcoin Core",
-	Long: `Raijin is the easiest way to install and operate Bitcoin Core.
-
+	Long: ParseProgram(`{{.TitledName}} is the easiest way to install and operate Bitcoin Core.
 To install Bitcoin Core to $HOME/bitcoin run.
 
-$ raijin install
+$ {{.ShortName}} install
 
 * Experimental *
 
 To install Bitcoin Core and the Lighting Network Daemon run.
 
-$ raijin install -l`,
+$ {{.ShortName}} install -l`),
 	// Uncomment the following line if your bare application
 	// has an action associated with it:
 	// Run: func(cmd *cobra.Command, args []string) { },
@@ -51,7 +50,7 @@ func printLogo() {
 	var (
 		from    = pterm.NewRGB(242, 169, 0)
 		to      = pterm.NewRGB(255, 255, 255)
-		letters = pterm.NewLettersFromString("raijin")
+		letters = pterm.NewLettersFromString(ShortName)
 	)
 	for i := 0; i < len(letters); i++ {
 		letters[i].RGB = from.Fade(0, float32(len(letters)), float32(i), to)
