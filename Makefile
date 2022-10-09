@@ -15,22 +15,24 @@
 # You should have received a copy of the GNU General Public License along
 # with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-CMD = ./raijin --prefix=$(PWD)/temp
+OUT = zeus
+CMD = ./$(OUT) --prefix=$(PWD)/temp
 
 .NOTPARALLEL:
-.PHONY: raijin
+.PHONY: $(OUT)
 
-raijin:
-	go build -v
+$(OUT):
+	go build -v -o $(OUT)
 	strip ./$@
 
-start: raijin
+start: $(OUT)
 	$(CMD) $@
 
-test-uinstall: raijin
+test-uinstall: $(OUT)
 	$(CMD) uninstall
 
-test-install: check raijin test-uinstall
+test-install: check $(OUT) test-uinstall
+	$(CMD)
 	$(CMD) install -d -l
 
 check:
@@ -41,5 +43,5 @@ install:
 
 clean:
 	-$(CMD) uninstall
-	-rm raijin
+	-rm $(OUT)
 	-rm temp/bitcoin.conf

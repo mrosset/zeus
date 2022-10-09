@@ -25,7 +25,7 @@ import (
 
 func TestParseProgram(t *testing.T) {
 	var (
-		expect = "raijin Raijin"
+		expect = "zeus Zeus"
 		got    = ParseProgram("{{.ShortName}} {{.TitledName}}")
 	)
 	if expect != got {

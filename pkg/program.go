@@ -26,7 +26,7 @@ import (
 )
 
 const (
-	ShortName = "raijin"
+	ShortName = "zeus"
 )
 
 type Program struct {
