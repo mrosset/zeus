@@ -30,13 +30,18 @@ import (
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
 	Use:   "raijin",
-	Short: "A brief description of your application",
-	Long: `A longer description that spans multiple lines and likely contains
-examples and usage of using your application. For example:
+	Short: "A utility to install Bitcoin Core",
+	Long: `Raijin is the easiest way to install and operate Bitcoin Core.
 
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+To install Bitcoin Core to $HOME/bitcoin run.
+
+$ raijin install
+
+* Experimental *
+
+To install Bitcoin Core and the Lighting Network Daemon run.
+
+$ raijin install -l`,
 	// Uncomment the following line if your bare application
 	// has an action associated with it:
 	// Run: func(cmd *cobra.Command, args []string) { },

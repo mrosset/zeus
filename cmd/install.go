@@ -29,7 +29,7 @@ import (
 // installCmd represents the install command
 var installCmd = &cobra.Command{
 	Use:   "install",
-	Short: "Installs bitcoin core",
+	Short: "Installs Bitcoin Core",
 	Long: `A longer description that spans multiple lines and likely contains examples
 and usage of using your command. For example:
 
@@ -49,8 +49,8 @@ func init() {
 
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:
-	installCmd.Flags().BoolP("debug", "d", false, "If false use debug URI for downloads")
-	installCmd.Flags().BoolP("lighting", "l", false, "If true installing Lightning Network Daemon")
+	installCmd.Flags().BoolP("debug", "d", false, "If used, uses debug URI for downloads")
+	installCmd.Flags().BoolP("lighting", "l", false, "If used also installs Lightning Network Daemon")
 }
 
 func mirror(cmd *cobra.Command) MirrorType {

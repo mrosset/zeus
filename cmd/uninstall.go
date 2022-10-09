@@ -28,7 +28,7 @@ import (
 // uninstallCmd represents the uninstall command
 var uninstallCmd = &cobra.Command{
 	Use:   "uninstall",
-	Short: "Uninstalls Bitcoin from prefix",
+	Short: "Uninstalls Bitcoin from --prefix",
 	Long: `A longer description that spans multiple lines and likely contains examples
 and usage of using your command. For example:
 
