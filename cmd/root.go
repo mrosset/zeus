@@ -42,14 +42,14 @@ to quickly create a Cobra application.`,
 	// Run: func(cmd *cobra.Command, args []string) { },
 }
 
-func printLogo(logo string) {
+func printLogo() {
 	var (
 		from    = pterm.NewRGB(242, 169, 0)
 		to      = pterm.NewRGB(255, 255, 255)
-		letters = pterm.NewLettersFromString(logo)
+		letters = pterm.NewLettersFromString("raijin")
 	)
 	for i := 0; i < len(letters); i++ {
-		letters[i].RGB = from.Fade(0, float32(len(logo)), float32(i), to)
+		letters[i].RGB = from.Fade(0, float32(len(letters)), float32(i), to)
 	}
 	pterm.DefaultBigText.WithLetters(letters).Render()
 }
@@ -57,12 +57,10 @@ func printLogo(logo string) {
 // Execute adds all child commands to the root command and sets flags appropriately.
 // This is called by main.main(). It only needs to happen once to the rootCmd.
 func Execute() {
-	printLogo("Raijin")
 	err := rootCmd.Execute()
 	if err != nil {
 		os.Exit(1)
 	}
-	pterm.Println()
 }
 
 func init() {

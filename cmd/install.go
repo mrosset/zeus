@@ -87,7 +87,7 @@ func install(cmd *cobra.Command, args []string) {
 		bitcoind = NewBitcoinInstaller(runtime.GOARCH, runtime.GOOS, prefix, mirror(cmd))
 		lnd      = NewLNDInstaller(runtime.GOARCH, runtime.GOOS, prefix, mirror(cmd))
 	)
-
+	printLogo()
 	doInstall(Installer(bitcoind))
 
 	if err := bitcoind.PostInstall(); err != nil {
