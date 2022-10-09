@@ -91,7 +91,7 @@ func checkPrefix(cmd *cobra.Command) {
 		prefix = prefixFlag(cmd)
 	)
 	if !Exists(prefix) {
-		pterm.Fatal.Printf("%s prefix does not exists. Have you run `raijin install`?", prefix)
+		pterm.Fatal.Printf("%s prefix does not exists. Have you run `%s install`?\n", prefix, ShortName)
 	}
 }
 
