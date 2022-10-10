@@ -1,5 +1,5 @@
 #+TITLE: Zeus
-#+DESCRIPTION: Zeus is the easiest way to install and operate a Bitcoin full node.
+#+DESCRIPTION: Zeus. The easiest way to install and operate a Bitcoin full node.
 #+AUTHOR: mike.rosset@gmail.com
 #+STARTUP: overview
 
