@@ -26,27 +26,22 @@ and [[https://bitcoincore.org/][Bitcoin]].
 More targets should be supported soon. If you have a target that you
 would like supported. Please create an [[https://github.com/mrosset/zeus/issues][Issue]]
 
-* Dependencies
 
-*** Building from Source
 
+* Building from Source
+** Dependencies
 This only requirement for building from source is a working [[https://go.dev/][Go]] distribution.
-
-*** Binary Dependencies
-
-Currently there are no binary releases. Though once there are
-releases. There should be no requirements other then the Zeus binary.
 
 * Installing Zeus
 
-** The fast way
+There are no binary releases yet. But you can quickly install with Go using.
 #+begin_src sh
   go install github.com/mrosset/zeus
 #+end_src
 
 #+RESULTS:
 
-** From Git
+The build form source tree you can use.
 #+begin_src sh
   git clone https://github.com/mrosset/zeus
   cd zeus
