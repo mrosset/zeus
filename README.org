@@ -30,7 +30,7 @@ would like supported. Please create an [[https://github.com/mrosset/zeus/issues]
 
 * Building from Source
 ** Dependencies
-This only requirement for building from source is a working [[https://go.dev/][Go]] distribution.
+The only requirement for building from source is a working [[https://go.dev/][Go]] distribution.
 
 * Installing Zeus
 
