@@ -1,19 +1,65 @@
 #+TITLE: Zeus
-#+DESCRIPTION: Zeus is the easiest way to install and operate a Bitcoin Core node.
+#+DESCRIPTION: Zeus is the easiest way to install and operate a Bitcoin full node.
 #+AUTHOR: mike.rosset@gmail.com
 #+STARTUP: overview
 
-The easiest way to install and operate a Bitcoin Core node.
+Is a unofficial installer for Bitcoin. Using Zeus you can download,
+install and have a running Bitcoin full node or wallet in just
+minutes.
 
-* Install Zeus
+* Status
+
+Though Zeus works at this time. It's still early in development and is
+considered in alpha state. Any currently releases are for developer
+consideration only and not recommended for production use.
+
+** Supported Architects and Operating Systems
+
+Zeus should work on any architect and operating system supported by [[https://go.dev/][Go]]
+and [[https://bitcoincore.org/][Bitcoin]]. Here's a list of supported targets
+
+*** Current supported targets
+
+**** Linux
+- x86_64
+- aarch64
+- ppc64le
+
+More targets should be supported soon. If you their is one you would
+like to see supported. Please create an [[https://github.com/mrosset/zeus/issues][Issue]]
+
+* Dependencies
+
+** Building from Source
+
+This only requirement for building from source is a working [[https://go.dev/][Go]] distribution.
+
+** Binary Dependencies
+
+Currently their are no binary releases. Though once there are
+releases. There should be no requirement other then the Zeus binary.
+
+* Installing Zeus
+
+** The fast way
 #+begin_src sh
   go install github.com/mrosset/zeus
-  #+end_src
+#+end_src
 
 #+RESULTS:
 
-* Installing Bitcoin Core with Zeus
-To install bitcoind to it's default location of $HOME/bitcoin run.
+** From Git
+#+begin_src sh
+  git clone https://github.com/mrosset/zeus
+  cd zeus
+  go install
+#+end_src
+
+#+RESULTS:
+
+* Using Zeus
+
+To install Bitcoin to it's default location of $HOME/bitcoin .
 #+begin_src sh
   zeus install
 #+end_src
@@ -24,6 +70,7 @@ zeus --prefix=/opt/bitcoin install
 #+end_src
 
 ** Experimental
+
 To install Bitcoin Core and Lighting Network Node
 #+begin_src sh
 zeus install -l
