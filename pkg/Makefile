@@ -17,4 +17,4 @@
 
 check:
 	-rm testdata/default.conf
-	go test -v
+	go test -v ./...
