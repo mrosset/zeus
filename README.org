@@ -16,10 +16,9 @@ consideration only and not recommended for production use.
 ** Supported Architects and Operating Systems
 
 Zeus should work on any architect and operating system supported by [[https://go.dev/][Go]]
-and [[https://bitcoincore.org/][Bitcoin]]. Here's a list of supported targets
+and [[https://bitcoincore.org/][Bitcoin]].
 
-*** Current supported targets
-
+Supported targets
 **** Linux
 - x86_64
 - aarch64
