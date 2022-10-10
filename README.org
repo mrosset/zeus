@@ -13,7 +13,7 @@ The easiest way to install and operate a Bitcoin Core node.
 #+RESULTS:
 
 * Installing Bitcoin Core with Zeus
-To install bitcoind to it's default location of $HOME/bitcoin
+To install bitcoind to it's default location of $HOME/bitcoin run.
 #+begin_src sh
   zeus install
 #+end_src

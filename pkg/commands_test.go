@@ -19,7 +19,6 @@ with this program.  If not, see <http://www.gnu.org/licenses/>.
 package zeus
 
 import (
-	"fmt"
 	"testing"
 )
 
@@ -30,7 +29,6 @@ func TestBitcoind(t *testing.T) {
 		got      = bitcoind.Path
 		expect   = "temp/bin/bitcoind"
 	)
-	fmt.Printf("%+v\n", bitcoind.Args)
 	if expect != got {
 		t.Errorf("Expect %s got %s", expect, got)
 	}
