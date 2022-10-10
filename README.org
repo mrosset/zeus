@@ -1,0 +1,26 @@
+Zeus is the easiest way to install and operate a Bitcoin Core node.
+
+* Install Zeus
+#+begin_src sh :results output
+  go install -v github.com/mrosset/zeus
+#+end_src
+
+#+RESULTS:
+
+* License
+
+Zeus is published under the [[https://www.gnu.org/licenses/gpl-3.0.html][GNU GPLv3 license]] or any later
+version.
+
+Zeus is free software: you can redistribute it and/or modify it
+under the terms of the GNU General Public License as published by the
+Free Software Foundation, either version 3 of the License, or (at your
+option) any later version.
+
+Zeus is distributed in the hope that it will be useful, but
+WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with Org mode.  If not, see https://www.gnu.org/licenses/.
