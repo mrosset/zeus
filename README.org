@@ -24,8 +24,8 @@ Supported targets
 - aarch64
 - ppc64le
 
-More targets should be supported soon. If you their is one you would
-like to see supported. Please create an [[https://github.com/mrosset/zeus/issues][Issue]]
+More targets should be supported soon. If you have a target that you
+would like supported. Please create an [[https://github.com/mrosset/zeus/issues][Issue]]
 
 * Dependencies
 
