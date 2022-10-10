@@ -18,7 +18,7 @@ To install bitcoind to it's default location of $HOME/bitcoin run.
   zeus install
 #+end_src
 
-If you would like to install bitcoin install another location. Use the --prefix flag
+If you would like to install bitcoin to another location. Use the --prefix flag
 #+begin_src sh
 zeus --prefix=/opt/bitcoin install
 #+end_src
