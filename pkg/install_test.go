@@ -99,7 +99,7 @@ func TestInstallerType(t *testing.T) {
 }
 
 func TestInstall(t *testing.T) {
-	prefix, err := ioutil.TempDir(os.TempDir(), "raijin")
+	prefix, err := ioutil.TempDir(os.TempDir(), "zeus")
 	if err != nil {
 		t.Fatal(err)
 	}
