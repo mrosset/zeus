@@ -44,4 +44,4 @@ install:
 clean:
 	-$(CMD) uninstall
 	-rm $(OUT)
-	-rm temp/bitcoin.conf
+	-rm -r temp/
