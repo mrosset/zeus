@@ -10,8 +10,8 @@ minutes.
 * Status
 
 Though Zeus works at this time. It's still early in development and is
-considered in alpha state. Any currently releases are for developer
-consideration only and not recommended for production use.
+considered in alpha state. Any current releases are for developer
+consideration only and not for production use.
 
 ** Supported CPU and Operating Systems
 
