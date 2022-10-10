@@ -13,19 +13,19 @@ Though Zeus works at this time. It's still early in development and is
 considered in alpha state. Any currently releases are for developer
 consideration only and not recommended for production use.
 
-** Supported Architects and Operating Systems
+** Supported CPU and Operating Systems
 
 Zeus should work on any architect and operating system supported by [[https://go.dev/][Go]]
 and [[https://bitcoincore.org/][Bitcoin]].
 
-**** Linux
+Currently provided support
+*** Linux
 - x86_64
 - aarch64
 - ppc64le
 
 More targets should be supported soon. If you have a target that you
 would like supported. Please create an [[https://github.com/mrosset/zeus/issues][Issue]]
-
 
 
 * Building from Source
