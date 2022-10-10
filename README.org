@@ -62,10 +62,16 @@ To install Bitcoin to it's default location of $HOME/bitcoin .
   zeus install
 #+end_src
 
+This will download and verify the Bitcoin binaries from [[https://bitcoincore.org/en/download/][Bitcoin Core
+Downloads]]
+
 If you would like to install bitcoin to another location. Use the --prefix flag
 #+begin_src sh
 zeus --prefix=/opt/bitcoin install
 #+end_src
+
+This will download and verify the Lighting Network Daemon binaries
+from [[https://github.com/lightningnetwork/lnd/releases][Lightning Releases]]
 
 ** Experimental
 
