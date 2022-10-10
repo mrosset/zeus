@@ -6,11 +6,28 @@
 The easiest way to install and operate a Bitcoin Core node.
 
 * Install Zeus
-#+begin_src sh :results output
-  go install -v github.com/mrosset/zeus
-#+end_src
+#+begin_src sh
+  go install github.com/mrosset/zeus
+  #+end_src
 
 #+RESULTS:
+
+* Installing Bitcoin Core with Zeus
+To install bitcoind to it's default location of $HOME/bitcoin
+#+begin_src sh
+  zeus install
+#+end_src
+
+If you would like to install bitcoin install another location. Use the --prefix flag
+#+begin_src sh
+zeus --prefix=/opt/bitcoin install
+#+end_src
+
+** Experimental
+To install Bitcoin Core and Lighting Network Node
+#+begin_src sh
+zeus install -l
+#+end_src
 
 * License
 
