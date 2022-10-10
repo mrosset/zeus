@@ -1,4 +1,10 @@
-Zeus is the easiest way to install and operate a Bitcoin Core node.
+#+TITLE: Zeus
+#+DESCRIPTION: Zeus is the easiest way to install and operate a Bitcoin Core node.
+#+AUTHOR: mike.rosset@gmail.com
+#+OPTIONS: num:t
+#+STARTUP: overview
+
+The easiest way to install and operate a Bitcoin Core node.
 
 * Install Zeus
 #+begin_src sh :results output
