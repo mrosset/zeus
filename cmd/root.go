@@ -31,7 +31,7 @@ import (
 var rootCmd = &cobra.Command{
 	Use:   ShortName,
 	Short: "A utility to install Bitcoin Core",
-	Long: ParseProgram(`{{.TitledName}} is the easiest way to install and operate Bitcoin Core.
+	Long: ParseProgram(`{{.TitledName}} is the easiest way to install and operate a Bitcoin Core node.
 To install Bitcoin Core to $HOME/bitcoin run.
 
 $ {{.ShortName}} install
