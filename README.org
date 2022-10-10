@@ -34,8 +34,8 @@ This only requirement for building from source is a working [[https://go.dev/][G
 
 *** Binary Dependencies
 
-Currently their are no binary releases. Though once there are
-releases. There should be no requirement other then the Zeus binary.
+Currently there are no binary releases. Though once there are
+releases. There should be no requirements other then the Zeus binary.
 
 * Installing Zeus
 
