@@ -20,8 +20,8 @@ and [[https://bitcoincore.org/][Bitcoin]].
 
 Currently supported CPUs and OSs
 *** Linux
-- x86_64
-- aarch64
+- x86_64 (amd64)
+- aarch64 (arm64)
 - ppc64le
 
 More targets should be supported soon. If you have a target that you
