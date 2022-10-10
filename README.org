@@ -41,7 +41,7 @@ There are no binary releases yet. But you can quickly install with Go using.
 
 #+RESULTS:
 
-The build form source tree you can use.
+To build from source tree you can use.
 #+begin_src sh
   git clone https://github.com/mrosset/zeus
   cd zeus
