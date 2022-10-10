@@ -28,11 +28,11 @@ would like supported. Please create an [[https://github.com/mrosset/zeus/issues]
 
 * Dependencies
 
-** Building from Source
+*** Building from Source
 
 This only requirement for building from source is a working [[https://go.dev/][Go]] distribution.
 
-** Binary Dependencies
+*** Binary Dependencies
 
 Currently their are no binary releases. Though once there are
 releases. There should be no requirement other then the Zeus binary.
