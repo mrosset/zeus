@@ -32,9 +32,8 @@ test-uinstall: $(OUT)
 	$(CMD) uninstall
 
 test-install: check $(OUT) test-uinstall
-	$(CMD)
-	$(CMD) install -d -l
-
+	$(CMD) install -h
+	$(CMD) install all -d
 check:
 	$(MAKE) -C ./pkg
 

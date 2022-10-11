@@ -27,7 +27,6 @@ Currently supported CPUs and OSs
 More targets should be supported soon. If you have a target that you
 would like supported. Please create an [[https://github.com/mrosset/zeus/issues][Issue]]
 
-
 * Building from Source
 ** Dependencies
 The only requirement for building from source is a working [[https://go.dev/][Go]] distribution.
@@ -52,9 +51,9 @@ To build from source tree you can use.
 
 * Using Zeus
 
-To install Bitcoin to it's default location of $HOME/bitcoin .
+To install Bitcoin to it's default location of $HOME/zeus .
 #+begin_src sh
-  zeus install
+  zeus install bitcoin
 #+end_src
 
 This will download and verify the Bitcoin binaries from [[https://bitcoincore.org/en/download/][Bitcoin Core
@@ -62,7 +61,7 @@ Downloads]]
 
 If you would like to install bitcoin to another location. Use the --prefix flag
 #+begin_src sh
-zeus --prefix=/opt/bitcoin install
+zeus --prefix=/opt/zeus install
 #+end_src
 
 This will download and verify the Lighting Network Daemon binaries
@@ -72,7 +71,7 @@ from [[https://github.com/lightningnetwork/lnd/releases][Lightning Releases]]
 
 To install Bitcoin Core and Lighting Network Node
 #+begin_src sh
-zeus install -l
+zeus install all
 #+end_src
 
 * License
