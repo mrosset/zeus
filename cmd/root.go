@@ -34,19 +34,24 @@ var rootCmd = &cobra.Command{
 	Long: ParseProgram(`{{.TitledName}} is the easiest way to install and operate a Bitcoin Core node.
 To install Bitcoin Core to $HOME/bitcoin run.
 
-$ {{.ShortName}} install
+$ {{.ShortName}} install bitcoin
 
 * Experimental *
 
 To install Bitcoin Core and the Lighting Network Daemon run.
 
-$ {{.ShortName}} install -l`),
+$ {{.ShortName}} install all`),
 	// Uncomment the following line if your bare application
 	// has an action associated with it:
 	// Run: func(cmd *cobra.Command, args []string) { },
 }
 
+var logoPrinted = false
+
 func printLogo() {
+	if logoPrinted {
+		return
+	}
 	var (
 		from    = pterm.NewRGB(242, 169, 0)
 		to      = pterm.NewRGB(255, 255, 255)
@@ -60,6 +65,7 @@ func printLogo() {
 		pterm.Fatal.Println(err)
 	}
 	pterm.DefaultCenter.Print(title)
+	logoPrinted = true
 }
 
 // Execute adds all child commands to the root command and sets flags appropriately.

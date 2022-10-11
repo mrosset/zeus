@@ -115,6 +115,7 @@ func lighting(cmd *cobra.Command) bool {
 }
 
 func doInstall(i Installer) {
+	printLogo()
 	pterm.Info.Println("Installing:", i.Description)
 	if err := i.Install(); err != nil {
 		pterm.Fatal.Println(err)
@@ -127,7 +128,6 @@ func installBitcoin(cmd *cobra.Command, args []string) {
 		bitcoind = NewBitcoinInstaller(runtime.GOARCH, runtime.GOOS, prefix, mirror(cmd))
 	)
 	doInstall(Installer(bitcoind))
-
 	if err := bitcoind.PostInstall(); err != nil {
 		pterm.Fatal.Println(err)
 	}
