@@ -29,11 +29,11 @@ import (
 
 const (
 	BITCOIN_VERSION = "23.0"
-	LND_VERSION     = "0.15.1-beta"
+	LND_VERSION     = "0.15.3-beta"
 
 	BITCOIN_URI = "https://bitcoincore.org/bin/bitcoin-core-%s"
 	LND_URI     = "https://github.com/lightningnetwork/lnd/releases/download/v%s"
-	LAN_URI     = "http://10.119.176.16"
+	LAN_URI     = "http://devel"
 )
 
 type MirrorType int
@@ -75,7 +75,7 @@ var bitcoinUpstream = UpstreamFiles{
 
 var lndUpstream = UpstreamFiles{
 	"amd64": {"linux": Tarball{
-		Hash: "0673768E657AC004367D07C20395D544A3D1DF926BE1A1990A17E23A8A91D4FB",
+		Hash: "1F7903C8F700860502D0E7D369130F86DC43E80B0887CC04D7DBEEC3122DBF50",
 		File: fmt.Sprintf("lnd-linux-amd64-v%s.tar.gz", LND_VERSION)}},
 	"ppc64le": {"linux": Tarball{
 		Hash: "0673768E657AC004367D07C20395D544A3D1DF926BE1A1990A17E23A8A91D4FB",
